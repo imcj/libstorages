@@ -1,0 +1,7 @@
+*.pyc
+cloudstore.egg-info/
+build/
+*.swp
+.DS_Store
+docs/build
+.dist/
