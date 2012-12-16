@@ -1,6 +1,7 @@
 import xml.sax
 from cloudstore import Object, CommonPrefix, Bucket
 from dateutil.parser import parser
+from pdb import set_trace as bp
 
 class OSSHandlerFactory:
     def createBucketHandler ( self ):

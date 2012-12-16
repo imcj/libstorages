@@ -24,4 +24,4 @@ if "__main__" == __name__:
     print store.get_all_objects ( "bukaopu", delimiter = "/" )
 
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"

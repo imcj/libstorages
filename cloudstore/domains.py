@@ -1,5 +1,7 @@
 #! -*- encoding:utf-8 -*-
 
+from pdb import set_trace as bp 
+
 class ObjectList ( list ):
     def __init__ ( self, collection = [], marker = "" ):
         self += collection
@@ -21,11 +23,28 @@ class CommonPrefix:
     def __repr__ ( self ):
         return "<CommonPrefix: \"%s\">" % self.name
 
+    @property
+    def short_name ( self ):
+        try:
+            shortname = self.name [ self.name[:-2].rindex ( "/" ) + 1 : ]
+        except ValueError:
+            shortname = self.name # TODO 
+        return shortname
+
 class Object:
     def __init__ ( self, name = "", bucket = None, last_modified = None, etag = "", size = "" ):
         self.name = name
         self.bucket = bucket
         self.last_modified = last_modified
+        self.size = size
+        
+    @property
+    def short_name ( self ):
+        try:
+            shortname = self.name [ self.name.rindex ( "/" ) + 1 : ]
+        except ValueError:
+            shortname = self.name # TODO 
+        return shortname
 
     def __repr__ ( self ):
         return "<Object: %s>" % self.name

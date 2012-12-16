@@ -1,12 +1,13 @@
 from cloudstore.oss.oss_api import OssAPI
 from cloudstore.backends.oss.assembly import OSSAssembly
 from cloudstore import Bucket
+from pdb import set_trace as bp
 
-class OSSAdapter:
-    def __init__ ( self, access_key, secret_key, host ):
-        self.host = host
-        self.access_key = access_key
-        self.secret_key = secret_key
+class Adapter:
+    def __init__ ( self, config ):
+        self.host = config.host
+        self.access_key = config.access_key
+        self.secret_key = config.secret_key
         self.oss = OssAPI ( self.host, self.access_key, self.secret_key )
         self.assembly = OSSAssembly ( )
 
@@ -15,5 +16,16 @@ class OSSAdapter:
         return self.assembly.load_buckets ( res )
 
     def get_all_objects ( self, bucket_name, prefix="", marker = "", delimiter = "", max_keys = 1000 ):
+        def filter ( keys, bucket_name, prefix = "", marker = "", delimiter = "", max_keys = 1000 ):
+            new_keys = []
+            prefix_len = len ( prefix )
+
+            for key in keys:
+                if key.name == prefix:
+                    continue
+                new_keys.append ( key )
+
+            return new_keys
         res = self.oss.list_bucket ( bucket_name, prefix, marker, delimiter, max_keys )
-        return self.assembly.load_objects ( Bucket ( bucket_name ), res )
+        keys = self.assembly.load_objects ( Bucket ( bucket_name ), res )
+        return filter ( keys, bucket_name, prefix, marker, delimiter, max_keys )

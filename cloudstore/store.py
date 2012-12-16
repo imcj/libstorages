@@ -1,9 +1,13 @@
+from pdb import set_trace as bp
+
 class Store:
     """
     """
 
     def __init__ ( self, config ):
         self.config = config
+        if not config.adapter:
+            raise StandardError ( "Missing adapter." )
 
     def create_bucket ( self, bucket_name ):
         pass

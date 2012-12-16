@@ -1,13 +1,13 @@
 import os
-from cloudstore import CommonPrefix, Object
-from cloudstore.backends.s3 import S3Adapter
+from cloudstore import CommonPrefix, Object, S3Config
+from cloudstore.backends.s3 import Adapter
 from pdb import set_trace as bp
 
 class TestStore:
     def setUp ( self ):
         self.access_key = os.getenv ( "AWS_ACCESS_KEY" )
         self.secret_key = os.getenv ( "AWS_SECRET_KEY" )
-        self.adapter = S3Adapter ( self.access_key, self.secret_key, "oss.aliyuncs.com" )
+        self.adapter = Adapter ( S3Config ( self.access_key, self.secret_key, "oss.aliyuncs.com" ) )
         self.bucket  = self.adapter.get_all_buckets ( )[0]
 
     def test_get_all_buckets ( self ):

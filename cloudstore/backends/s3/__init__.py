@@ -1,6 +1,7 @@
 import boto
 from cloudstore import Bucket, Object, CommonPrefix
 from dateutil.parser import parser
+from pdb import set_trace as bp
 
 class S3Assembly:
     def __init__ ( self ):
@@ -12,8 +13,9 @@ class S3Assembly:
     def load_buckets ( self, buckets_boto ):
         return [ Bucket ( name = bucket.name, creation_date = bucket.creation_date ) for bucket in buckets_boto ]
 
-    def load_object ( self, name, bucket, last_modified = None ):
-        key = Object ( name, bucket, last_modified = parser ( ).parse ( last_modified ) )
+    # TODO 
+    def load_object ( self, name, bucket, size = 0, last_modified = None ):
+        key = Object ( name, bucket, size = size, last_modified = parser ( ).parse ( last_modified ) )
         return key
 
     def load_objects ( self, bucket, objects_boto ):
@@ -21,7 +23,7 @@ class S3Assembly:
         objects = []
         for key in objects_boto:
             if isinstance ( key, boto.s3.key.Key ):
-                new_key = self.load_object ( key.name, bucket, last_modified = key.last_modified )
+                new_key = self.load_object ( key.name, bucket, size = key.size, last_modified = key.last_modified )
             elif isinstance ( key, boto.s3.prefix.Prefix ):
                 new_key = CommonPrefix ( key.name, bucket )
 
@@ -29,12 +31,12 @@ class S3Assembly:
 
         return objects
 
-class S3Adapter:
-    def __init__ ( self, access_key, secret_key, location ):
-        self.location = location
-        self.access_key = access_key
-        self.secret_key = secret_key
-        self.s3 = boto.connect_s3 ( aws_access_key_id = access_key, aws_secret_access_key = secret_key )
+class Adapter:
+    def __init__ ( self, config ):
+        self.location = config.location
+        self.access_key = config.access_key
+        self.secret_key = config.secret_key
+        self.s3 = boto.connect_s3 ( aws_access_key_id = self.access_key, aws_secret_access_key = self.secret_key )
         self.assembly = S3Assembly ( )
 
     def get_all_buckets ( self ):

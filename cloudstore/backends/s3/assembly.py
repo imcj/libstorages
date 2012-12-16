@@ -1,0 +1,2 @@
+# class ObjectAssembly:
+#     def

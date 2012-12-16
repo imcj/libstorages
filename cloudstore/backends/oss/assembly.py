@@ -1,6 +1,7 @@
 import xml.sax
 from cloudstore.backends.oss import handler
 from cloudstore.factory import SaxParserFactory
+from pdb import set_trace as bp
 
 class OSSAssembly:
     def __init__ ( self ):
