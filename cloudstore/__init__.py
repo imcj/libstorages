@@ -1,12 +1,6 @@
 import os
 import sys
-import datetime
-import xml.sax
-import boto
-
-from oss.oss_api import OssAPI
 from pdb import set_trace as bp
-from dateutil.parser import parser
 
 from cloudstore.domains import CommonPrefix, Object, Bucket, ObjectList
 from config import OSSConfig, S3Config

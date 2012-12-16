@@ -30,7 +30,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
     long_description = f.read()
 
 # read dev requirements
-fname = os.path.join(os.path.dirname(__file__), 'requirements.txt')
+fname = os.path.join(os.path.dirname(__file__), 'requirements.txt')k
 with open(fname) as f:
     tests_require = list(map(lambda l: l.strip(), f.readlines()))
 
