@@ -1,2 +1,3 @@
 boto
+nose
 httplib2
