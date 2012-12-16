@@ -6,9 +6,6 @@
 import os
 from setuptools import setup, find_packages, Command
 import sys
-import nose
-
-from cloudstore import __version__
 
 CLASSIFIERS = [
     'Development Status :: 1 - Beta',
@@ -58,7 +55,7 @@ class NoseTest ( Command ):
 
 setup(
     name = 'cloudstore',
-    version = __version__,
+    version = '0.0.2',
 
     description = 'Cloud Store API',
     long_description = long_description,
