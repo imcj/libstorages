@@ -50,7 +50,7 @@ class NoseTest ( Command ):
 
     def run ( self ):
         import sys, subprocess
-        errno = subprocess.call ( [ "nosetests", "-s" ] )
+        errno = subprocess.call ( [ "nosetests", "-c", "nose.cfg", "tests" ] )
         raise SystemExit ( errno )
 
 setup(
