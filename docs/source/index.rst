@@ -3,9 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-=================================
+====================================
 CloudStore: 提供统一的存储云访问接口
-=================================
+====================================
+
+.. image:: https://travis-ci.org/bukaopu/cloudstore.png
 
 为各种云提供统一的访问接口，一是方便切换存储云，二让多点冗余更加方便，几行简单的代码就能搞定。
 
