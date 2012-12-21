@@ -20,7 +20,8 @@ True
 >>> has_bukaopu2 = [ bucket for bucket in buckets if bucket.bucket_name \
 ... == "bukaopu2" ]
 >>> bucket_bukaopu = bcs.bucket ( "bukaopu" )
-
+>>> bucket_bukaopu.get_acl ( )['status']
+200
 ----------
 删除Bucket
 ----------
@@ -50,14 +51,21 @@ True
 
 
 >>> import random
->>> for i in range ( 1 ):
+>>> for i in range ( 2 ):
 ...     object = bucket_bukaopu.object ( "/" + str ( random.random ( ) ) )
 ...     d = object.put ( 'test' )
+...     d = object.make_public ( )
 >>> objects_bukaopu = bucket_bukaopu.list_objects ( "/" )
 >>> found = [ obj.object_name for obj in objects_bukaopu \
 ... if obj.object_name.startswith ( "/0." ) ]
 >>> len ( found ) >= 1
 True
+>>> first = objects_bukaopu[0]
+>>> first.get_acl ( )
+>>> 
+>>> first.head ( )['status']
+200
+>>> found = None
 
 -------
 删除对象
@@ -66,4 +74,3 @@ True
 >>> for i in found:
 ...     object = bucket_bukaopu.object ( i )
 ...     resp = object.delete ( )
->>> objects_bukaopu[1].get_acl ( )

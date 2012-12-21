@@ -6,9 +6,9 @@ from cloudstore.domains import CommonPrefix, Object, Bucket, ObjectList
 from config import OSSConfig, S3Config
 from cloudstore.store import Store
 
-__all__ =  [ 'CommonPrefix', 'Object', 'Bucket', 'ObjectList',
-             'OSSConfig', 'S3Config',
-             'Store' ]
+# __all__ =  [ 'CommonPrefix', 'Object', 'Bucket', 'ObjectList',
+#              'OSSConfig', 'S3Config',
+#              'Store' ]
 
 STORE_DIR = os.path.dirname ( os.path.abspath ( __file__ ) )
 

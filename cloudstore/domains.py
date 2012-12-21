@@ -3,7 +3,7 @@
 from pdb import set_trace as bp 
 
 class ObjectList ( list ):
-    def __init__ ( self, collection = [], marker = "" ):
+    def __init__ ( self, collection = [], marker = "", max_keys = 1000 ):
         self += collection
         self.marker = marker
 
