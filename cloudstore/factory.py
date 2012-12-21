@@ -32,19 +32,23 @@ class StoreFactory:
     def __init__ ( self ):
         self.adapter_factory = AdapterFactory ( )
 
-    def create ( self, vender_id ):
+    def create ( self, vender_id, access_key, secret_key ):
         if not vender_id in cloudstore.config.VENDER:
             raise StandardError ( "Not implement this vender." )
 
-        ACCESS_KEY = os.getenv ( "%s_ACCESS_KEY" % vender_id.upper ( ) )
-        SECRET_KEY = os.getenv ( "%s_SECRET_KEY" % vender_id.upper ( ) )
         config_class_name  = "%sConfig" % vender_id.upper ( )
         has_specify_config = hasattr ( cloudstore.config, config_class_name )
 
         if not has_specify_config:
-            config = Config ( access_key = ACCESS_KEY, secret_key = SECRET_KEY )
+            config = Config ( access_key = access_key, secret_key = secret_key )
         else:
             config = getattr ( cloudstore.config, config_class_name ) ( access_key = ACCESS_KEY, secret_key = SECRET_KEY )
 
         config.adapter = self.adapter_factory.create ( vender_id, config )
         return cloudstore.Store ( config )
+
+    def env ( self, vender_id ):
+        ACCESS_KEY = os.getenv ( "%s_ACCESS_KEY" % vender_id.upper ( ) )
+        SECRET_KEY = os.getenv ( "%s_SECRET_KEY" % vender_id.upper ( ) )
+
+        return self.create ( vender_id, ACCESS_KEY, SECRET_KEY )
