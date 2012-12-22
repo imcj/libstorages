@@ -34,6 +34,7 @@ class Store:
         :param bucket: Bucket对象
         :type bucket: string
         """
+        self.config.adapter.delete_bucket ( bucket )
 
     def get_all_buckets ( self ):
         return self.config.adapter.get_all_buckets ( )
@@ -60,7 +61,7 @@ class Store:
         :param file_path: 本地文件路径，如果指定file_path那么data就会实效
         :type file_path: string
         """
-        pass
+        self.config.adapter.create ( bucket, key, data, file_path )
 
     def create_object_from_file ( self, bucket, key, file_path ):
         """ 创建对象
@@ -75,13 +76,13 @@ class Store:
         :type file_path: string
 
         """
-        self.create_object ( bucket, key, file_path )
+        self.create_object ( bucket, key, None, file_path )
 
-    def get_object ( self, bucket_name, object_name ):
-        pass
+    def get_object ( self, bucket, key ):
+        return self.config.adapter.get_object ( bucket, key )
 
-    def delete_object ( self, object ):
-        pass
+    def delete_object ( self, key ):
+        self.config.adapter.delete_object ( key )
 
     def get_all_objects ( self, bucket_name, prefix="", marker = "", delimiter = "", max_keys = 1000 ):
         return self.config.adapter.get_all_objects ( bucket_name, prefix, marker, delimiter, max_keys )
