@@ -25,7 +25,7 @@ class Store:
         :rtype: :class:`Bucket`
         :return: :class:`Bucket`
         """
-        pass
+        self.config.adapter.create_bucket ( bucket )
 
     def delete_bucket ( self, bucket ):
         """
@@ -84,5 +84,6 @@ class Store:
     def delete_object ( self, key ):
         self.config.adapter.delete_object ( key )
 
-    def get_all_objects ( self, bucket_name, prefix="", marker = "", delimiter = "", max_keys = 1000 ):
+    def get_all_objects ( self, bucket_name, prefix="", marker = "",\
+                          delimiter = "", max_keys = 1000 ):
         return self.config.adapter.get_all_objects ( bucket_name, prefix, marker, delimiter, max_keys )
