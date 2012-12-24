@@ -42,7 +42,7 @@ class StoreFactory:
         if not has_specify_config:
             config = Config ( access_key = access_key, secret_key = secret_key )
         else:
-            config = getattr ( cloudstore.config, config_class_name ) ( access_key = ACCESS_KEY, secret_key = SECRET_KEY )
+            config = getattr ( cloudstore.config, config_class_name ) ( access_key = access_key, secret_key = secret_key )
 
         config.adapter = self.adapter_factory.create ( vender_id, config )
         return cloudstore.Store ( config )

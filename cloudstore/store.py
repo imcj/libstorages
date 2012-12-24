@@ -1,3 +1,5 @@
+#!-*- encoding: utf-8 -*-
+
 from pdb import set_trace as bp
 
 class Store:
@@ -15,8 +17,8 @@ class Store:
     def get_all_buckets ( self ):
         return self.config.adapter.get_all_buckets ( )
 
-    def put_object ( self, bucket_name, object_name, data ):
-        pass
+    def put_object ( self, bucket, key, data ):
+        self.config.adapter.put_object ( bucket, key, data )
 
     def get_object ( self, bucket_name, object_name ):
         pass
