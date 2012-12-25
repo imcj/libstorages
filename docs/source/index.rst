@@ -34,17 +34,20 @@ CloudStore: 统一云存储访问接口
 初始化对象
 -----------
 
-可通过StoreFactory.create创建获得 Store 对象， Store 对象提供了所有云存储控制
-API 。或通过自行实例化 Config 构造 Store 对象。
+首先，通过一个工厂方法实例化对象。
 
-对于大多数云存储厂商，常用的两个概念为 Bucket 和对象， Bucket 下可以有若干的对
-象，Bucket也被大部分厂商作为计费和限制配额的基本单位，并提供有限的数量，而对象
-则可以拥有无限多个。有时Bucket被叫做空间一类的名词，但通常都会提到Bucket。
+>>> import cloudstore
+>>> store = cloudstore.env ( "oss" )
 
->>> import os
->>> from StringIO import StringIO
->>> from cloudstore import env
->>> store = env ( "oss" )
+.. note::
+
+    可通过StoreFactory.create创建获得 Store 对象， Store 对象提供了所有云存储
+    控制    API 。或通过自行实例化 Config 构造 Store 对象。
+
+    对于大多数云存储厂商，常用的两个概念为 Bucket 和对象， Bucket 下可以有若干
+    的对    象，Bucket也被大部分厂商作为计费和限制配额的基本单位，并提供有限的
+    数量，而对象    则可以拥有无限多个。有时Bucket被叫做空间一类的名词，但通常
+    都会提到Bucket。
 
 上传文件
 ---------
@@ -59,6 +62,7 @@ CloudStore 支持两种上传方式
 
 >>> store.create_object ( "bukaopu", "hello", "hello, world !!!" )
 
+>>> from StringIO import StringIO
 >>> upload_data = StringIO ( "hello, world !!!" )
 >>> store.create_object ( "bukaopu", "hello", upload_data )
 
@@ -79,18 +83,4 @@ CloudStore 支持两种上传方式
 
 >>> store.get_all_objects ( "bukaopu", delimiter = "/" )
 [<CommonPrefix: "avatar/">, <CommonPrefix: "css/">, <CommonPrefix: "highlight/">, <CommonPrefix: "icons/">, <CommonPrefix: "img/">, <CommonPrefix: "js/">, <Object: .gitignore>, <Object: rubygems-1.3.6.tgz>]
-
-Contents:
-
-.. toctree::
-   :maxdepth: 2
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
