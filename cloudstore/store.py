@@ -39,7 +39,7 @@ class Store:
     def get_all_buckets ( self ):
         return self.config.adapter.get_all_buckets ( )
 
-    def create_object ( self, bucket, key, data, file_path = None ):
+    def create_object ( self, bucket, key, data ):
         """ 创建对象
 
         上传数据到远程服务器，部分厂商需要创建后设置acl。否则默认为私有。
@@ -61,7 +61,12 @@ class Store:
         :param file_path: 本地文件路径，如果指定file_path那么data就会实效
         :type file_path: string
         """
-        self.config.adapter.create ( bucket, key, data, file_path )
+
+        if isinstance ( data, basestring ):
+            self.config.adapter.create ( bucket, key, data )
+        elif hasattr ( data, "read" ):
+            self.config.adapter \
+            .create_object_from_stream ( bucket, key, data )
 
     def create_object_from_file ( self, bucket, key, file_path ):
         """ 创建对象
@@ -76,7 +81,7 @@ class Store:
         :type file_path: string
 
         """
-        self.create_object ( bucket, key, None, file_path )
+        self.config.adapter.create_object_from_file ( bucket, key, file_path )
 
     def get_object ( self, bucket, key ):
         return self.config.adapter.get_object ( bucket, key )
