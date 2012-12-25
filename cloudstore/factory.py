@@ -22,29 +22,51 @@ class AdapterFactory:
         adapter_module = getattr ( cloudstore.backends, vender_id.lower ( ) )
         return getattr ( adapter_module , "Adapter" ) ( config ) 
 
-
 class StoreFactory:
     """
     格式 (VENDER_ID)_ACCESS_KEY (VENDER_ID)_SECRET_KEY 厂商id的大写。
     两个环境变量获得初始默认的配置
     """
 
+    instance = None
+
     def __init__ ( self ):
         self.adapter_factory = AdapterFactory ( )
 
-    def create ( self, vender_id ):
+    @staticmethod
+    def get_instance ( ):
+        if not StoreFactory.instance:
+            StoreFactory.instance = StoreFactory ( )
+
+        return StoreFactory.instance;
+
+    def create ( self, vender_id, access_key, secret_key ):
         if not vender_id in cloudstore.config.VENDER:
             raise StandardError ( "Not implement this vender." )
 
-        ACCESS_KEY = os.getenv ( "%s_ACCESS_KEY" % vender_id.upper ( ) )
-        SECRET_KEY = os.getenv ( "%s_SECRET_KEY" % vender_id.upper ( ) )
         config_class_name  = "%sConfig" % vender_id.upper ( )
         has_specify_config = hasattr ( cloudstore.config, config_class_name )
 
         if not has_specify_config:
-            config = Config ( access_key = ACCESS_KEY, secret_key = SECRET_KEY )
+            config = Config ( access_key = access_key,
+                              secret_key = secret_key )
         else:
-            config = getattr ( cloudstore.config, config_class_name ) ( access_key = ACCESS_KEY, secret_key = SECRET_KEY )
+            config = getattr ( cloudstore.config, config_class_name ) \
+                             ( access_key = access_key, \
+                               secret_key = secret_key )
 
         config.adapter = self.adapter_factory.create ( vender_id, config )
         return cloudstore.Store ( config )
+
+    def env ( self, vender_id ):
+        ACCESS_KEY = os.getenv ( "%s_ACCESS_KEY" % vender_id.upper ( ) )
+        SECRET_KEY = os.getenv ( "%s_SECRET_KEY" % vender_id.upper ( ) )
+
+        return self.create ( vender_id, ACCESS_KEY, SECRET_KEY )
+
+def create ( vender_id, access_key, secret_key ):
+    return StoreFactory.get_instance ( ) \
+                       .create ( vender_id, access_key, secret_key )
+
+def env ( vender_id ):
+    return StoreFactory.get_instance ( ).env ( vender_id )

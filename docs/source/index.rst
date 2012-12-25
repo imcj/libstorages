@@ -1,11 +1,8 @@
-.. CloudStore documentation master file, created by
-   sphinx-quickstart on Thu Dec 13 12:34:06 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 ====================================
 CloudStore: 统一云存储访问接口
 ====================================
+
+.. image:: https://travis-ci.org/bukaopu/cloudstore.png
 
 为不同厂商云存储提供统一的API接口，易于学习，减少对象的数量使其尽可能的轻量级。
 
@@ -46,9 +43,8 @@ API 。或通过自行实例化 Config 构造 Store 对象。
 
 >>> import os
 >>> from StringIO import StringIO
->>> from cloudstore import Store, OSSConfig
->>> store = Store ( OSSConfig ( os.getenv ( "OSS_ACCESS_KEY" ), \
-... os.getenv ( "OSS_SECRET_KEY" ) ) )
+>>> from cloudstore import env
+>>> store = env ( "oss" )
 
 上传文件
 ---------
@@ -71,14 +67,14 @@ CloudStore 支持两种上传方式
 >>> store.create_object_from_file ( "bukaopu", "hello", "/etc/resolve" )
 
 获取所有的Bucket
----------------
+------------------
 :doc:`对象参考 <ref/domains>`
 
 >>> store.get_all_buckets ( )
 [<Bucket: source1 created at 2012-05-24T09:52:16.000Z>, <Bucket: bukaopu created at 2012-11-30T14:48:31.000Z>]
 
 获取所有的对象
--------------
+---------------
 :doc:`Store API 参考 <ref/store>`
 
 >>> store.get_all_objects ( "bukaopu", delimiter = "/" )

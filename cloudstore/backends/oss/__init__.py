@@ -2,6 +2,7 @@ from cloudstore.oss.oss_api import OssAPI
 from cloudstore.backends.oss.assembly import OSSAssembly
 from cloudstore import Bucket
 from pdb import set_trace as bp
+from StringIO import StringIO
 
 class Adapter:
     def __init__ ( self, config ):
@@ -10,6 +11,14 @@ class Adapter:
         self.secret_key = config.secret_key
         self.oss = OssAPI ( self.host, self.access_key, self.secret_key )
         self.assembly = OSSAssembly ( )
+
+    def put_object ( self, bucket, key, data ):
+
+        if isinstance ( data, basestring ):
+            data = StringIO ( data )
+        return self.oss.put_object_from_fp ( bucket, key,\
+            data )
+
 
     def get_all_buckets ( self ):
         res =  self.oss.list_all_my_buckets ( )
