@@ -3,3 +3,4 @@ nose
 tox
 httplib2
 python-dateutil
+simplejson

@@ -1,6 +1,6 @@
-===============
+=================
 BCS - 百度云存储
-===============
+=================
 
 ----
 实例
@@ -25,8 +25,8 @@ BCS - 百度云存储
 True
 >>> has_bukaopu2 = [ bucket for bucket in buckets if bucket.bucket_name \
 ... == "bukaopu2" ]
->>> bucket_bukaopu = bcs.bucket ( "bukaopu" )
->>> bucket_bukaopu.get_acl ( )['status']
+>>> public = bcs.bucket ( BUCKET_PUBLIC )
+>>> public.get_acl ( )['status']
 200
 
 ----------
@@ -65,18 +65,13 @@ Bucket的权限控制
 
 >>> import random
 >>> for i in range ( 2 ):
-...     object = bucket_bukaopu.object ( "/" + str ( random.random ( ) ) )
-...     d = object.put ( 'test' )
+...     object = public.object ( "/%d" % i )
+...     d = object.put ( "1" )
 ...     d = object.make_public ( )
->>> objects_bukaopu = bucket_bukaopu.list_objects ( "/" )
->>> found = [ obj.object_name for obj in objects_bukaopu \
-... if obj.object_name.startswith ( "/0." ) ]
->>> len ( found ) >= 1
-True
->>> first = objects_bukaopu[0]
+>>> objects = public.list_objects ( "/" )
+>>> first = objects[0]
 >>> first.head ( )['status']
 200
->>> found = None
 
 ------------------
 对象权限控制的默认值
@@ -84,9 +79,11 @@ True
 
 默认为私有的Bucket。
 
->>> private = bcs.bucket ( "cloudstore-cj-private" ).object ( "/PRIVATE").\
-... put ( "PRIVATE")
->>> acl = bcs.bucket ( "cloudstore-cj-private" ).object ( "/PRIVATE")\
+>>> private = bcs.bucket ( BUCKET_PRIVATE )
+>>> private.object ( "/PRIVATE").\
+... put ( "PRIVATE" )['status']
+200
+>>> acl = private.object ( "/PRIVATE")\
 ... .get_acl ( )
 >>> statements = simplejson.loads ( acl['body'] )['statements']
 >>> statements[0]['user']
@@ -94,9 +91,11 @@ True
 
 默认ACL是公开读的Buket。
 
->>> pubilc  = bcs.bucket ( "cloudstore-cj-public" ).object ( "/PUBLIC").\
-... put ( "PUBLIC")
->>> acl = bcs.bucket ( "cloudstore-cj-public" ).object ( "/PUBLIC")\
+>>> public = bcs.bucket ( BUCKET_PUBLIC )
+>>> public.object ( "/PUBLIC").\
+... put ( "PUBLIC" )['status']
+200
+>>> acl = public.object ( "/PUBLIC")\
 ... .get_acl ( )
 >>> statements = simplejson.loads ( acl['body'] )['statements']
 >>> statements[0]['user']
@@ -108,13 +107,25 @@ True
 读取对象
 -------
 
->>> resp = first.get ( )
+>>> resp = public.object ( "/0" ).get ( )
 >>> resp['body']
-'test'
+'1'
+
+----------
+Superfile
+----------
+
+>>> public.superfile ( "/superfile", objects ).put ( )['status']
+200
+>>> public.object ( "/superfile" ).get ( )['body']
+'11'
 
 -------
 删除对象
 -------
 
->>> for key in bcs.bucket ( "bukaopu" ).list_objects ( prefix="/0." ):
+>>> for key in public.list_objects ( prefix="/" ):
+...     resp = key.delete ( )
+
+>>> for key in private.list_objects ( prefix = "/" ):
 ...     resp = key.delete ( )
