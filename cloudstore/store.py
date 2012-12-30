@@ -63,7 +63,7 @@ class Store:
         """
 
         if isinstance ( data, basestring ):
-            self.config.adapter.create ( bucket, key, data )
+            self.config.adapter.create_object ( bucket, key, data )
         elif hasattr ( data, "read" ):
             self.config.adapter \
             .create_object_from_stream ( bucket, key, data )
@@ -86,8 +86,8 @@ class Store:
     def get_object ( self, bucket, key ):
         return self.config.adapter.get_object ( bucket, key )
 
-    def delete_object ( self, key ):
-        self.config.adapter.delete_object ( key )
+    def delete_object ( self, bucket, key ):
+        self.config.adapter.delete_object ( bucket, key )
 
     def get_all_objects ( self, bucket_name, prefix="", marker = "",\
                           delimiter = "", max_keys = 1000 ):
