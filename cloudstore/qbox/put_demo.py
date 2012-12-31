@@ -8,10 +8,10 @@ import rscli
 import digestoauth
 import uptoken
 
-config.ACCESS_KEY = '<Please apply your access key>'
-config.SECRET_KEY = '<Dont send your secret key to anyone>'
+config.ACCESS_KEY = '3cmgyvf_rMTPuhlFNm1FS89q94Fykmb5ZWZAm92a'
+config.SECRET_KEY = 'xFmoT2RvsnISK7NoqJuYElWSmkHON6eRLz2h9SL1'
 
-bucket = 'test_photos'
+bucket = 'bukaopu'
 key = 'test.jpg'
 customer = 'end_user_id'
 demo_domain = 'test_photos.dn.qbox.me'

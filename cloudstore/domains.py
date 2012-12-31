@@ -3,7 +3,7 @@
 from pdb import set_trace as bp 
 
 class ObjectList ( list ):
-    def __init__ ( self, collection = [], marker = "" ):
+    def __init__ ( self, collection = [], marker = "", max_keys = 1000 ):
         self += collection
         self.marker = marker
 
@@ -55,4 +55,4 @@ class Bucket:
         self.creation_date = creation_date
 
     def __repr__ ( self ):
-        return "<Bucket: %s created at %s>" % ( self.name, self.creation_date )
+        return "<Bucket: %s>" % ( self.name )

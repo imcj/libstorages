@@ -6,3 +6,10 @@ build/
 docs/build
 .dist/
 .tox/
+
+*.egg
+.pypirc
+.coverage
+dist/
+htmlcov/
+*.egg-info/

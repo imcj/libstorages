@@ -42,6 +42,7 @@ import urllib
 import urllib2
 import mimetools, mimetypes
 import os, stat
+from pdb import set_trace as bp
 
 class Callable:
     def __init__(self, anycallable):
@@ -57,7 +58,7 @@ class MultipartPostHandler(urllib2.BaseHandler):
             v_vars = []
             try:
                  for(key, value) in data.items():
-                     if type(value) == file:
+                     if type(value) == file or hasattr ( value, 'seek' ):
                          v_files.append((key, value))
                      else:
                          v_vars.append((key, value))
@@ -88,8 +89,13 @@ class MultipartPostHandler(urllib2.BaseHandler):
             buffer += 'Content-Disposition: form-data; name="%s"' % key
             buffer += '\r\n\r\n' + value + '\r\n'
         for(key, fd) in files:
-            file_size = os.fstat(fd.fileno())[stat.ST_SIZE]
-            filename = fd.name.split('/')[-1]
+            if isinstance ( fd, file ):
+              file_size = os.fstat(fd.fileno())[stat.ST_SIZE]
+              filename = fd.name.split('/')[-1]
+            else:
+              fd.seek ( os.SEEK_SET, os.SEEK_END )
+              file_size = fd.tell ( )
+              filename = key
             contenttype = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
             buffer += '--%s\r\n' % boundary
             buffer += 'Content-Disposition: form-data; name="%s"; filename="%s"\r\n' % (key, filename)

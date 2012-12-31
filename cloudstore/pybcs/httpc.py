@@ -14,6 +14,9 @@ import base64
 import hashlib
 import mimetypes
 
+from StringIO import StringIO
+from pdb import set_trace as bp
+
 try:
     import json
 except:
@@ -157,12 +160,16 @@ class PyCurlHTTPC(HTTPC):
         self._init_curl('GET', url, headers, local_file)
         return self._do_request()
 
+    def _get_size ( self, data ):
+        return ( hasattr ( data, 'read' ) and hasattr ( data, 'len' ) ) and \
+            data.len or len ( data )
+
     def put(self, url, body='', headers={}):
         headers = copy.deepcopy(headers)
         logger.info('pycurl -X PUT -d "%s" "%s" ', shorten(body, 100), url)
         self._init_curl('PUT', url, headers)
         req_buf =  StringIO(body)
-        self.c.setopt(pycurl.INFILESIZE, len(body)) 
+        self.c.setopt(pycurl.INFILESIZE, self._get_size ( req_buf ) ) 
         self.c.setopt(pycurl.READFUNCTION, req_buf.read)
         return self._do_request()
 
@@ -170,7 +177,7 @@ class PyCurlHTTPC(HTTPC):
         headers = copy.deepcopy(headers)
         if log: 
             logger.info('pycurl -X POST "%s" ', url)
-        headersnew = { 'Content-Length': str(len(body))}
+        headersnew = { 'Content-Length': self._get_size ( body ) }
         headers.update(headersnew)
         self._init_curl('POST', url, headers)
         req_buf =  StringIO(body)
@@ -301,7 +308,7 @@ class HttplibHTTPC(HTTPC):
             resp_body = response.read()
         for (k, v) in response.getheaders():
             logger.debug('< %s: %s' % (k, v))
-        logger.debug('< ' + shorten(data, 1024))
+#logger.debug('< ' + shorten(data, 1024))
         rst = { 'status': response.status, 
                 'header' : dict(response.getheaders()), 
                 'body': resp_body, 
@@ -318,7 +325,7 @@ class HttplibHTTPC(HTTPC):
         for (k, v) in headers.items():
             logger.debug('> %s: %s' % (k, v))
         logger.debug('\n')
-        logger.debug('> ' + shorten(data, 1024))
+#logger.debug('> ' + shorten(data, 1024))
         o = urlparse(url)
         host = o.netloc
         path = o.path
@@ -343,7 +350,8 @@ class HttplibHTTPC(HTTPC):
     def put(self, url, body='', headers={}):
         headers = copy.deepcopy(headers)
         if 'content-length' not in headers:
-            headers.update({'content-length': str(len(body)) })
+            headers.update({'content-length': ( hasattr ( body, "read" ) and \
+                    hasattr ( body, "len" ) ) and body.len or str(len(body)) })
         return self.request('PUT', url, body, headers)
 
     def post(self, url, body='', headers={}):

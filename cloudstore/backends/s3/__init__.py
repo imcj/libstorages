@@ -1,4 +1,5 @@
 import boto
+import boto.s3.connection
 from cloudstore import Bucket, Object, CommonPrefix
 from dateutil.parser import parser
 from pdb import set_trace as bp
@@ -36,7 +37,10 @@ class Adapter:
         self.location = config.location
         self.access_key = config.access_key
         self.secret_key = config.secret_key
-        self.s3 = boto.connect_s3 ( aws_access_key_id = self.access_key, aws_secret_access_key = self.secret_key )
+        self.s3 = boto.connect_s3 ( \
+            aws_access_key_id = self.access_key, \
+            aws_secret_access_key = self.secret_key, \
+        )
         self.assembly = S3Assembly ( )
 
     def get_all_buckets ( self ):
@@ -49,3 +53,22 @@ class Adapter:
         objects.sort ( key = lambda k: isinstance ( k, CommonPrefix ) and -1 or 0 )
 
         return objects
+
+    def _factry_create_object ( self, bucket, key ):       
+        remote = boto.s3.key.Key (
+            boto.s3.bucket.Bucket ( self.s3, bucket ),
+            key )
+
+        return remote
+
+    def create_object ( self, bucket, key, data ):
+        remote = self._factry_create_object ( bucket, key )
+        remote.set_content_from_string ( data )
+
+    def create_object_from_stream ( self, bucket, key, data ):
+        remote = self._factry_create_object ( bucket, key )
+        remote.set_contents_from_file ( data )
+
+    def create_object_from_file ( self, bucket, key, file_path ):
+        remote = self._factry_create_object ( bucket, key )
+        remote.set_contents_from_filename ( file_path )

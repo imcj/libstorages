@@ -8,7 +8,7 @@ from setuptools import setup, find_packages, Command
 import sys
 
 CLASSIFIERS = [
-    'Development Status :: 1 - Beta',
+    'Development Status :: 1 - Planning',
     'Environment :: Other Environment',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
@@ -20,10 +20,8 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 2.6',
     'Programming Language :: Python :: 2.7',
     'Topic :: Internet',
-    'Topic :: Utilities',
     'Topic :: Software Development :: Libraries :: Python Modules',
-    'Topic :: Internet :: WWW/HTTP',
-    'Topic :: Internet :: WWW/HTTP :: Dynamic Content']
+    ]
 
 # read long description
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
@@ -54,7 +52,7 @@ class NoseTest ( Command ):
         raise SystemExit ( errno )
 
 setup(
-    name = 'cloudstore',
+    name = 'libstorages',
     version = '0.0.2',
 
     description = 'Cloud Store API',
@@ -62,7 +60,7 @@ setup(
     author = 'CJ',
     author_email = 'weicongju@gmail.com',
     license = 'MIT',
-    url = 'http://bukaopu.us',
+    url = 'http://libstorages.com',
 
     classifiers = CLASSIFIERS,
     zip_safe = False,
