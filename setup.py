@@ -8,7 +8,7 @@ from setuptools import setup, find_packages, Command
 import sys
 
 CLASSIFIERS = [
-    'Development Status :: 1 - Beta',
+    'Development Status :: 1 - Planning',
     'Environment :: Other Environment',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
@@ -20,10 +20,8 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 2.6',
     'Programming Language :: Python :: 2.7',
     'Topic :: Internet',
-    'Topic :: Utilities',
     'Topic :: Software Development :: Libraries :: Python Modules',
-    'Topic :: Internet :: WWW/HTTP',
-    'Topic :: Internet :: WWW/HTTP :: Dynamic Content']
+    ]
 
 # read long description
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
