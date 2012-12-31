@@ -9,3 +9,7 @@ docs/build
 
 *.egg
 .pypirc
+.coverage
+dist/
+htmlcov/
+*.egg-info/
