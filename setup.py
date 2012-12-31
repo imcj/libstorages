@@ -54,7 +54,7 @@ class NoseTest ( Command ):
         raise SystemExit ( errno )
 
 setup(
-    name = 'cloudstore',
+    name = 'libstorages',
     version = '0.0.2',
 
     description = 'Cloud Store API',
@@ -62,7 +62,7 @@ setup(
     author = 'CJ',
     author_email = 'weicongju@gmail.com',
     license = 'MIT',
-    url = 'http://bukaopu.us',
+    url = 'http://libstorages.com',
 
     classifiers = CLASSIFIERS,
     zip_safe = False,
