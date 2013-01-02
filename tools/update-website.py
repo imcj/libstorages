@@ -8,14 +8,14 @@ library_dir = os.path.abspath ( os.path.join ( \
 
 sys.path.insert ( 0, library_dir )
 
-import cloudstore
+import libstorages
 from pdb import set_trace as bp
 
 build_html = os.path.abspath ( os.path.join ( \
     os.path.dirname ( os.path.abspath ( __file__ ) ), \
     "..", "docs", "build", "html" ) )
 
-store = cloudstore.env ( "s3" )
+store = libstorages.env ( "s3" )
 
 for path in os.walk ( build_html ):
     for file_path in path[2]:
@@ -24,7 +24,7 @@ for path in os.walk ( build_html ):
                              .replace ( "\\", "/" )
 
         store.create_object_from_file ( \
-            "cloudstore.bukaopu.us", \
+            "libstorages.bukaopu.us", \
             remote_object_name, \
             local_file )
 

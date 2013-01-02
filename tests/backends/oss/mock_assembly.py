@@ -1,5 +1,5 @@
 from mock_handler import MockOSSHandlerFactory, MockSaxParserFactory
-from cloudstore.backends.oss.assembly import OSSAssembly
+from libstorages.backends.oss.assembly import OSSAssembly
 from StringIO import StringIO
 
 class MockAssembly ( OSSAssembly ):

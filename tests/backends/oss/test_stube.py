@@ -1,6 +1,6 @@
 import os
-from cloudstore import CommonPrefix, Object, OSSConfig
-from cloudstore.backends.oss import Adapter
+from libstorages import CommonPrefix, Object, OSSConfig
+from libstorages.backends.oss import Adapter
 from pdb import set_trace as bp
 
 class TestStore:

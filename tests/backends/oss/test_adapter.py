@@ -1,5 +1,5 @@
-from cloudstore.backends.oss import Adapter
-from cloudstore import Bucket, OSSConfig
+from libstorages.backends.oss import Adapter
+from libstorages import Bucket, OSSConfig
 from mock_oss_api import MockOssAPI
 from mock_handler import MockOSSBucketXMLContentHandler, MockOSSObjectXMLContentHandler, MockSaxParserFactory
 from mock_assembly import MockAssembly

@@ -1,4 +1,4 @@
 """
->>> import cloudstore.factory
->>> store = cloudstore.factory.StoreFactory ( ).create ( 'qiniu' )
+>>> import libstorages.factory
+>>> store = libstorages.factory.StoreFactory ( ).create ( 'qiniu' )
 """

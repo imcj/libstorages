@@ -4,9 +4,9 @@
 Store
 ======
 
-cloudstore
+libstorages
 -----------
 
-.. automodule:: cloudstore.store
+.. automodule:: libstorages.store
    :members:
    :undoc-members:

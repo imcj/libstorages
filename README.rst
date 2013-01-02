@@ -1,7 +1,7 @@
 libstorages: 简单的云存储接口
 =============================
 
-.. image:: https://travis-ci.org/bukaopu/cloudstore.png
+.. image:: https://travis-ci.org/imcj/libstorages.png
 
 libstorages 提供简单统一的云存储API接口。
 

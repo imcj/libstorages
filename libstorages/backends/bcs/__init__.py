@@ -1,7 +1,7 @@
 #! -*- encoding:utf-8 -*-
 
-from cloudstore import pybcs, Bucket
-from cloudstore.errors import BucketNameDuplication, BucketCanNotCreate, \
+from libstorages import pybcs, Bucket
+from libstorages.errors import BucketNameDuplication, BucketCanNotCreate, \
 ObjectNotExists
 from pdb import set_trace as bp
 from StringIO import StringIO

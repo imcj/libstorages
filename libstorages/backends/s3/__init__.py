@@ -1,6 +1,6 @@
 import boto
 import boto.s3.connection
-from cloudstore import Bucket, Object, CommonPrefix
+from libstorages import Bucket, Object, CommonPrefix
 from dateutil.parser import parser
 from pdb import set_trace as bp
 

@@ -1,7 +1,7 @@
 import os
-from cloudstore.factory import SaxParserFactory
-from cloudstore.backends.oss.handler import OSSObjectXMLContentHandler, OSSBucketXMLContentHandler
-from cloudstore import Bucket, CommonPrefix, Object
+from libstorages.factory import SaxParserFactory
+from libstorages.backends.oss.handler import OSSObjectXMLContentHandler, OSSBucketXMLContentHandler
+from libstorages import Bucket, CommonPrefix, Object
 from pdb import set_trace as bp
 
 FIXTUES_DIR = os.path.join ( os.path.dirname ( os.path.abspath ( __file__ ) ), "../", "../", "fixtures" )

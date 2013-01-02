@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# CloudStore documentation build configuration file, created by
+# libstorages documentation build configuration file, created by
 # sphinx-quickstart on Thu Dec 13 12:34:06 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'CloudStore'
+project = u'libstorages'
 copyright = u'2012, CJ'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -164,7 +164,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'CloudStoredoc'
+htmlhelp_basename = 'libstoragesdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -183,7 +183,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'CloudStore.tex', u'CloudStore Documentation',
+  ('index', 'libstorages.tex', u'libstorages Documentation',
    u'CJ', 'manual'),
 ]
 
@@ -213,7 +213,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'cloudstore', u'CloudStore Documentation',
+    ('index', 'libstorages', u'libstorages Documentation',
      [u'CJ'], 1)
 ]
 
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'CloudStore', u'CloudStore Documentation',
-   u'CJ', 'CloudStore', 'One line description of project.',
+  ('index', 'libstorages', u'libstorages Documentation',
+   u'CJ', 'libstorages', 'One line description of project.',
    'Miscellaneous'),
 ]
 
@@ -245,7 +245,7 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'CloudStore'
+epub_title = u'libstorages'
 epub_author = u'CJ'
 epub_publisher = u'CJ'
 epub_copyright = u'2012, CJ'

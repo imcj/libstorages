@@ -4,9 +4,9 @@ from pdb import set_trace as bp
 
 class Store:
     """
-    .. module:: cloudstore
+    .. module:: libstorages
 
-    `cloudstore` 的所有接口全部集中在，:class:`cloudstore.store.Store` ，提供对
+    `libstorages` 的所有接口全部集中在，:class:`libstorages.store.Store` ，提供对
     :class:`Bucket` 和 :class:`Object` 的控制。
     """
 
@@ -46,7 +46,7 @@ class Store:
         
         类: :class:`StoreFactory`
 
-        >>> store = cloudstore.factory.StoreFactory.create ( "oss" )
+        >>> store = libstorages.factory.StoreFactory.create ( "oss" )
         >>> store.create_object ( "bucket1", "object1", "helloworld" )
 
         >>> store.create_object_from_file ( "bucket1", "object1",
@@ -71,7 +71,7 @@ class Store:
     def create_object_from_file ( self, bucket, key, file_path ):
         """ 创建对象
 
-        :meth:`cloudstore.store.Store.create_object` 的别名。
+        :meth:`libstorages.store.Store.create_object` 的别名。
 
         :param bucket: Bucket的名子
         :type bucket: `string`

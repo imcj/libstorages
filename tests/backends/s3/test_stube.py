@@ -1,6 +1,6 @@
 import os
-from cloudstore import CommonPrefix, Object, S3Config
-from cloudstore.backends.s3 import Adapter
+from libstorages import CommonPrefix, Object, S3Config
+from libstorages.backends.s3 import Adapter
 from pdb import set_trace as bp
 
 class TestStore:

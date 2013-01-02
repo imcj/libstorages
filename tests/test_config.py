@@ -1,4 +1,4 @@
-from cloudstore.config import Config, BCSConfig
+from libstorages.config import Config, BCSConfig
 
 class TestConfig:
     def test_constractor ( self ):

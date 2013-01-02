@@ -1,4 +1,4 @@
-from cloudstore import Bucket, Object, CommonPrefix
+from libstorages import Bucket, Object, CommonPrefix
 from pdb import set_trace as bp
 
 
