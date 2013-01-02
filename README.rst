@@ -62,3 +62,10 @@ libstorages 提供简单统一的云存储API接口。
 - Pull Request
 
 - 把你的名字填入 `作者 <https://github.com/imcj/libstorages/blob/master/AUTHORS.rst>`_。
+
+TEAM
+-----
+
+目前唯一的开发人员。
+
+- `@imcj <https://github.com/imcj>`_ 
