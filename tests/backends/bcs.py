@@ -1,7 +1,7 @@
 #! -*- encoding: utf-8 -*-
 
 __doc__="""
->>> from cloudstore import env, Store, BUCKET_PUBLIC, TEST_BUCKET_CREATE
+>>> from libstorages import env, Store, BUCKET_PUBLIC, TEST_BUCKET_CREATE
 >>> from StringIO import StringIO
 >>> import tempfile
 >>> import os
@@ -32,7 +32,7 @@ Traceback (most recent call last):
     ...
 ObjectNotExists
 >>> store.get_all_buckets ( )
-[<Bucket: cloudstore-test-create>, <Bucket: cloudstore-cj-public>, \
+[<Bucket: libstorages-test-create>, <Bucket: libstorages-cj-public>, \
 <Bucket: bukaopu2>, <Bucket: bukaopu>]
 >>> store.get_all_objects ( BUCKET_PUBLIC )
 """

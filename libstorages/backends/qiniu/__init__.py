@@ -1,14 +1,14 @@
 import urllib
 import mimetypes
 import simplejson
-import cloudstore
-import cloudstore.qbox
-import cloudstore.qbox.rs
-import cloudstore.qbox.rscli
-import cloudstore.qbox.uptoken
-import cloudstore.qbox.digestoauth
+import libstorages
+import libstorages.qbox
+import libstorages.qbox.rs
+import libstorages.qbox.rscli
+import libstorages.qbox.uptoken
+import libstorages.qbox.digestoauth
 
-from cloudstore import Bucket
+from libstorages import Bucket
 from StringIO import StringIO
 from pdb import set_trace as bp
 
@@ -18,8 +18,8 @@ class Adapter:
         self.access_key = config.access_key
         self.secret_key = config.secret_key
         self.oss = OssAPI ( self.host, self.access_key, self.secret_key )
-        self.qn = cloudstore.qbox.rs.Service (\
-             cloudstore.qbox.digestoauth.Client ( ),\
+        self.qn = libstorages.qbox.rs.Service (\
+             libstorages.qbox.digestoauth.Client ( ),\
              bucket )
 
     def create_bucket ( self, bucket ):
@@ -32,7 +32,7 @@ class Adapter:
         return [ Bucket ( bucket ) for bucket in self.qn.Buckets ( ) ]
 
     def create_object ( self, bucket, key, data, file_path = None ):
-        token = cloudstore.qbox.uptoken.UploadToken ( bucket ).\
+        token = libstorages.qbox.uptoken.UploadToken ( bucket ).\
                 generate_token ( )
 
         mime_type = mimetypes.guess_type ( key )[0]
@@ -41,10 +41,10 @@ class Adapter:
             mime_type = 'application/octet-stream'
 
         if file_path:
-            upload_response = cloudstore.qbox.rscli.UploadFile ( \
+            upload_response = libstorages.qbox.rscli.UploadFile ( \
                 bucket, key, mime_type, file_path, '', '', token )
         else:
-            upload_response = cloudstore.qbox.rscli.upload_with_file ( \
+            upload_response = libstorages.qbox.rscli.upload_with_file ( \
                 bucket, key, mime_type, \
                 StringIO ( data ), '', '', token )
         

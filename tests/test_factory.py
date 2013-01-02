@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-from cloudstore import Store, OSSConfig
-from cloudstore.backends.oss import Adapter
-from cloudstore.factory import AdapterFactory, StoreFactory
-from cloudstore import env, create
+from libstorages import Store, OSSConfig
+from libstorages.backends.oss import Adapter
+from libstorages.factory import AdapterFactory, StoreFactory
+from libstorages import env, create
 
 class TestAdapterFactory:
     def test_create ( self ):

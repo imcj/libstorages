@@ -9,14 +9,14 @@ BCS - 百度云存储
 注意，如果没有设置环境变量这个`doctest`肯定会跑不起来。
 
 >>> import os
->>> BUCKET_PUBLIC  = "cloudstore-cj-public"
->>> BUCKET_PRIVATE = "cloudstore-cj-private"
+>>> BUCKET_PUBLIC  = "libstorages-cj-public"
+>>> BUCKET_PRIVATE = "libstorages-cj-private"
 >>> AK = os.getenv ( "BCS_ACCESS_KEY" )
 >>> SK = os.getenv ( "BCS_SECRET_KEY" )
 
 以上是一些配置，如果想跑这个测试，必须修改为自己的参数。
 
->>> from cloudstore import pybcs
+>>> from libstorages import pybcs
 >>> from pdb import set_trace as bp
 >>> import simplejson
 >>> bcs = pybcs.BCS ( "http://bcs.duapp.com", AK, SK, pybcs.HttplibHTTPC )

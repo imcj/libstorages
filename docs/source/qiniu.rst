@@ -17,16 +17,16 @@
 >>> import urllib
 >>> import mimetypes
 >>> import simplejson
->>> import cloudstore
->>> import cloudstore.qbox
->>> import cloudstore.qbox.rs
->>> import cloudstore.qbox.rscli
->>> import cloudstore.qbox.uptoken
->>> import cloudstore.qbox.digestoauth
+>>> import libstorages
+>>> import libstorages.qbox
+>>> import libstorages.qbox.rs
+>>> import libstorages.qbox.rscli
+>>> import libstorages.qbox.uptoken
+>>> import libstorages.qbox.digestoauth
 >>> from StringIO import StringIO
->>> cloudstore.qbox.config.ACCESS_KEY = ACCESS_KEY
->>> cloudstore.qbox.config.SECRET_KEY = SECRET_KEY
->>> qn = cloudstore.qbox.rs.Service ( cloudstore.qbox.digestoauth.Client ( ),\
+>>> libstorages.qbox.config.ACCESS_KEY = ACCESS_KEY
+>>> libstorages.qbox.config.SECRET_KEY = SECRET_KEY
+>>> qn = libstorages.qbox.rs.Service ( libstorages.qbox.digestoauth.Client ( ),\
 ... "b" )
 >>> qn.Mkbucket ( "bukaopu" )
 True
@@ -41,7 +41,7 @@ True
 
 添加的bucket暂时还没有删除的API.
 
->>> qn = cloudstore.qbox.rs.Service ( cloudstore.qbox.digestoauth.Client ( ),\
+>>> qn = libstorages.qbox.rs.Service ( libstorages.qbox.digestoauth.Client ( ),\
 ... BUCKET_PUBLIC )
 >>> qn.Mkbucket ( BUCKET_PUBLIC )
 True
@@ -52,16 +52,16 @@ True
 
 以存在的文件会抛出异常。
 
->>> token = cloudstore.qbox.uptoken.UploadToken ( BUCKET_PUBLIC ).\
+>>> token = libstorages.qbox.uptoken.UploadToken ( BUCKET_PUBLIC ).\
 ... generate_token ( )
->>> upload_response = cloudstore.qbox.rscli.UploadFile (\
+>>> upload_response = libstorages.qbox.rscli.UploadFile (\
 ... BUCKET_PUBLIC, 'requirements.txt', 'image/jpg', \
 ... 'requirements.txt', \
 ... '', '', token )
 >>> upload_response = simplejson.loads ( upload_response )
 >>> upload_response['hash']
 u'FgC2TiaMDJQSxY9WSSsiLDokLT2B'
->>> upload_response = cloudstore.qbox.rscli.upload_with_file (\
+>>> upload_response = libstorages.qbox.rscli.upload_with_file (\
 ... BUCKET_PUBLIC, 'hello.txt', mimetypes.types_map['.txt'], \
 ... StringIO ( 'hello' ), \
 ... '', '', token )

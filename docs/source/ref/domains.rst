@@ -7,6 +7,6 @@ Domains
 domains
 -----------
 
-.. automodule:: cloudstore.domains
+.. automodule:: libstorages.domains
    :members:
    :undoc-members:

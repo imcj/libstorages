@@ -4,8 +4,8 @@ import os
 import xml.sax
 
 from pdb import set_trace as bp
-import cloudstore
-import cloudstore.backends
+import libstorages
+import libstorages.backends
 
 class SaxParserFactory:
 	def create ( self ):
@@ -17,9 +17,9 @@ class AdapterFactory:
         pass
 
     def create ( self, vender_id, config ):
-        adapter_module_name = "cloudstore.backends.%s" % vender_id.lower ( )
+        adapter_module_name = "libstorages.backends.%s" % vender_id.lower ( )
         backends = __import__ ( adapter_module_name )
-        adapter_module = getattr ( cloudstore.backends, vender_id.lower ( ) )
+        adapter_module = getattr ( libstorages.backends, vender_id.lower ( ) )
         return getattr ( adapter_module , "Adapter" ) ( config ) 
 
 class StoreFactory:
@@ -41,22 +41,22 @@ class StoreFactory:
         return StoreFactory.instance;
 
     def create ( self, vender_id, access_key, secret_key ):
-        if not vender_id in cloudstore.config.VENDER:
+        if not vender_id in libstorages.config.VENDER:
             raise StandardError ( "Not implement this vender." )
 
         config_class_name  = "%sConfig" % vender_id.upper ( )
-        has_specify_config = hasattr ( cloudstore.config, config_class_name )
+        has_specify_config = hasattr ( libstorages.config, config_class_name )
 
         if not has_specify_config:
             config = Config ( access_key = access_key,
                               secret_key = secret_key )
         else:
-            config = getattr ( cloudstore.config, config_class_name ) \
+            config = getattr ( libstorages.config, config_class_name ) \
                              ( access_key = access_key, \
                                secret_key = secret_key )
 
         config.adapter = self.adapter_factory.create ( vender_id, config )
-        return cloudstore.Store ( config )
+        return libstorages.Store ( config )
 
     def env ( self, vender_id ):
         ACCESS_KEY = os.getenv ( "%s_ACCESS_KEY" % vender_id.upper ( ) )

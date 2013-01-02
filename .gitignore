@@ -1,5 +1,5 @@
 *.pyc
-cloudstore.egg-info/
+libstorages.egg-info/
 build/
 *.swp
 .DS_Store

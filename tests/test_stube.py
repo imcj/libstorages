@@ -2,7 +2,7 @@
 
 __doc__ = """
 >>> from pdb import set_trace as bp
->>> from cloudstore.factory import StoreFactory
+>>> from libstorages.factory import StoreFactory
 >>> factory = StoreFactory ( )
 >>> store = factory.env ( "oss" )
 >>> # 以上为配置store对象。

@@ -1,7 +1,7 @@
 libstorages: 简单的云存储接口
 ====================================
 
-.. image:: https://travis-ci.org/bukaopu/cloudstore.png
+.. image:: https://travis-ci.org/bukaopu/libstorages.png
 
 libstorages 提供简单统一的云存储API接口。
 
@@ -31,8 +31,8 @@ libstorages 提供简单统一的云存储API接口。
 初始化对象
 -----------
 
->>> import cloudstore
->>> store = cloudstore.env ( "oss" )
+>>> import libstorages
+>>> store = libstorages.env ( "oss" )
 >>> store.create_object ( "bukaopu", "hello", "hello, world !!!" )
 >>> # OR 通过文件上传
 >>> store.create_object_from_file ( "bukaopu", "hello", "/etc/resolve" )

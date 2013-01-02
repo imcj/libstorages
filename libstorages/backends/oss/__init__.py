@@ -1,6 +1,6 @@
-from cloudstore.oss.oss_api import OssAPI
-from cloudstore.backends.oss.assembly import OSSAssembly
-from cloudstore import Bucket
+from libstorages.oss.oss_api import OssAPI
+from libstorages.backends.oss.assembly import OSSAssembly
+from libstorages import Bucket
 from pdb import set_trace as bp
 from StringIO import StringIO
 

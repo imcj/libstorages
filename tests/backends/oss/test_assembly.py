@@ -1,7 +1,7 @@
 from mock_handler import MockOSSBucketXMLContentHandler, MockOSSObjectXMLContentHandler, MockSaxParserFactory
 from mock_assembly import MockOSSHandlerFactory
-from cloudstore.backends.oss.assembly import OSSAssembly
-from cloudstore import Bucket
+from libstorages.backends.oss.assembly import OSSAssembly
+from libstorages import Bucket
 from nose import with_setup
 from pdb import set_trace as bp
 from StringIO import StringIO
