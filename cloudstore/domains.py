@@ -32,18 +32,44 @@ class CommonPrefix:
         return shortname
 
 class Object:
-    def __init__ ( self, name = "", bucket = None, last_modified = None, etag = "", size = "" ):
+    def __init__ ( self, name = "", bucket = None, last_modified = None, \
+                   etag = "", md5 = "", content_type = "", size = "", \
+                   write_progress_callback = None, read_progress_callback = \
+                   None ):
         self.name = name
         self.bucket = bucket
         self.last_modified = last_modified
+        self.etag = etag
+        self.md5  = md5
+        self.content_type = content_type
         self.size = size
+        self.write_progress_callback = write_progress_callback
+        self.read_progress_callback  = read_progress_callback
+
+    def delete ( self ):
+        raise NotImplementedError ( )
+
+    def exists ( self ):
+        raise NotImplementedError ( )
+
+    def read ( self ):
+        raise NotImplementedError ( )
+
+    def create ( self, data ):
+        raise NotImplementedError ( )
+
+    def create_from_buffer ( self, buff ):
+        raise NotImplementedError ( )
+
+    def create_from_file ( self, filepath ):
+        raise NotImplementedError ( )
         
     @property
     def short_name ( self ):
         try:
             shortname = self.name [ self.name.rindex ( "/" ) + 1 : ]
         except ValueError:
-            shortname = self.name # TODO 
+            shortname = self.name
         return shortname
 
     def __repr__ ( self ):
@@ -53,6 +79,12 @@ class Bucket:
     def __init__ ( self, name = "", creation_date = None ):
         self.name = name
         self.creation_date = creation_date
+
+    def create ( self ):
+        raise NotImplementedError ( )
+
+    def delete ( self ):
+        raise NotImplementedError ( )
 
     def __repr__ ( self ):
         return "<Bucket: %s>" % ( self.name )
