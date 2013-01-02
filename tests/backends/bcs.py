@@ -36,14 +36,3 @@ ObjectNotExists
 <Bucket: bukaopu2>, <Bucket: bukaopu>]
 >>> store.get_all_objects ( BUCKET_PUBLIC )
 """
-"""
-创建Bucket本身有很多问题，异常算了。
->>> store.create_bucket ( TEST_BUCKET_CREATE )
-Traceback (most recent call last):
-    ...
-BucketNameDuplication
->>> store.create_bucket ( TEST_BUCKET_CREATE )
-Traceback (most recent call last):
-    ...
-BucketNameDuplication
-"""
