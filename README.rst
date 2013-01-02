@@ -55,7 +55,7 @@ libstorages 提供简单统一的云存储API接口。
 
 项目还在孵化阶段，需要贡献更多的后端。
 
-- 从GitHub `Fork <https://github.com/imcj/libstorages>`_ 项目然后建立`新的分支 <http://www.ruanyifeng.com/blog/2012/07/git.html>`_ 。
+- 从GitHub `Fork <https://github.com/imcj/libstorages>`_ 项目然后建立 `新的分支 <http://www.ruanyifeng.com/blog/2012/07/git.html>`_ 。
 
 - 编码
 
