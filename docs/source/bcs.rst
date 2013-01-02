@@ -11,8 +11,8 @@ BCS - 百度云存储
 >>> import os
 >>> BUCKET_PUBLIC  = "cloudstore-cj-public"
 >>> BUCKET_PRIVATE = "cloudstore-cj-private"
->>> AK = os.getenv ( "BAIDU_ACCESS_KEY" )
->>> SK = os.getenv ( "BAIDU_SECRET_KEY" )
+>>> AK = os.getenv ( "BCS_ACCESS_KEY" )
+>>> SK = os.getenv ( "BCS_SECRET_KEY" )
 
 以上是一些配置，如果想跑这个测试，必须修改为自己的参数。
 
@@ -108,6 +108,8 @@ Bucket的权限控制
 -------
 
 >>> resp = public.object ( "/0" ).get ( )
+>>> resp
+>>> bp ( )
 >>> resp['body']
 '1'
 
