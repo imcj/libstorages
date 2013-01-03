@@ -3,6 +3,7 @@
 from libstorages import pybcs, Object, Bucket
 from libstorages.errors import BucketNameDuplication, BucketCanNotCreate, \
 ObjectNotExists
+from libstorages.pybcs.httpc import HTTPException
 from pdb import set_trace as bp
 from StringIO import StringIO
 
@@ -17,6 +18,9 @@ class BCSObject ( Object ):
         self.bcs_object = bcs_object
         self.reading = False
         self.response = None
+
+        if not kwargs.has_key ( "name" ):
+            kwargs['name'] = self.bcs_object.object_name
         super ( BCSObject, self ).__init__ ( *args, **kwargs )
 
     def create ( self, data ):
@@ -34,13 +38,19 @@ class BCSObject ( Object ):
     def exists ( self ):
         pass
 
-
     def read ( self, size = None ):
         if not self.reading:
             self.reading = not self.reading
-            self.response = self.bcs_object.get ( )
+            try:
+                self.response = self.bcs_object.get ( )
+            except HTTPException, e:
+                if 404 == e.status:
+                    raise ObjectNotExists ( self.name[1:] )
         
         return self.response['body'].read ( size )
+
+    def __repr__ ( self ):
+        return "<Object: %s>" % self.name[1:]
 
 class BCSBucket ( Bucket ):
     def __init__ ( self, bcs, *args, **kwargs ):
