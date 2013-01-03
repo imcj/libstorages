@@ -331,7 +331,7 @@ class HttplibHTTPC(HTTPC):
             response.close()
             resp_body = ''
         else:
-            resp_body = response.read()
+            resp_body = response
         for (k, v) in response.getheaders():
             logger.debug('< %s: %s' % (k, v))
 #logger.debug('< ' + shorten(data, 1024))

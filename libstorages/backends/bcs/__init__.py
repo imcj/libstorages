@@ -15,6 +15,8 @@ class BucketAssembly:
 class BCSObject ( Object ):
     def __init__ ( self, bcs_object, *args, **kwargs ):
         self.bcs_object = bcs_object
+        self.reading = False
+        self.response = None
         super ( BCSObject, self ).__init__ ( *args, **kwargs )
 
     def create ( self, data ):
@@ -31,6 +33,14 @@ class BCSObject ( Object ):
 
     def exists ( self ):
         pass
+
+
+    def read ( self, size = None ):
+        if not self.reading:
+            self.reading = not self.reading
+            self.response = self.bcs_object.get ( )
+        
+        return self.response['body'].read ( size )
 
 class BCSBucket ( Bucket ):
     def __init__ ( self, bcs, *args, **kwargs ):
@@ -61,7 +71,7 @@ class Adapter:
     def get_all_buckets ( self ):
         buckets = self.bcs.list_buckets ( )
         return [\
-            BCSBucket ( self.bcs, bcs_bucket.bucket_name ) for bus_bucket \
+            BCSBucket ( self.bcs, bcs_bucket.bucket_name ) for bcs_bucket \
             in buckets
         ]
 
@@ -88,8 +98,8 @@ class Adapter:
 
     def get_object ( self, bucket, key ):
         try:
-            return StringIO ( self.bcs.bucket ( bucket ) \
-                   .object ( "/" + key ).get ( )['body'] )
+            return BCSObject ( self.bcs.bucket ( bucket ) \
+                   .object ( "/" + key ) )
         except pybcs.httpc.HTTPException, e:
             if 404 == e.status:
                 raise ObjectNotExists ( )
@@ -99,5 +109,7 @@ class Adapter:
 
     def get_all_objects ( self, bucket, prefix = "", marker = "", \
                           delimiter = "", max_keys = 1000 ):
-        return self.bcs.bucket ( bucket ) \
-            .list_objects ( prefix, marker, max_keys )
+        return [ BCSObject ( bcs_object ) for bcs_object in \
+            self.bcs.bucket ( bucket ).\
+            list_objects ( prefix, marker, max_keys )
+        ]
