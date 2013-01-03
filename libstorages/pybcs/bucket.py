@@ -61,7 +61,7 @@ class Bucket:
         url = self.get_url + '&' + urllib.urlencode(params)
 
         rst = self.c.get(url)
-        j = json.loads( rst['body'] )
+        j = json.loads( rst['body'].read ( ) )
         return j['object_list']
 
     @network
