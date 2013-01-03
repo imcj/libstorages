@@ -31,7 +31,9 @@ class CommonPrefix:
             shortname = self.name # TODO 
         return shortname
 
-class Object:
+class Object ( object ):
+    BUFFER_SIZE = 8192
+
     def __init__ ( self, name = "", bucket = None, last_modified = None, \
                    etag = "", md5 = "", content_type = "", size = "", \
                    write_progress_callback = None, read_progress_callback = \
@@ -52,7 +54,8 @@ class Object:
     def exists ( self ):
         raise NotImplementedError ( )
 
-    def read ( self ):
+    def read ( self, size = None ):
+        size = not size and self.BUFFER_SIZE or size
         raise NotImplementedError ( )
 
     def create ( self, data ):
@@ -75,7 +78,7 @@ class Object:
     def __repr__ ( self ):
         return "<Object: %s>" % self.name
 
-class Bucket:
+class Bucket ( object ):
     def __init__ ( self, name = "", creation_date = None ):
         self.name = name
         self.creation_date = creation_date

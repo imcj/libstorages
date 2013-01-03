@@ -12,7 +12,7 @@ from libstorages import Bucket
 from StringIO import StringIO
 from pdb import set_trace as bp
 
-class Adapter:
+class QINIUStorage:
     def __init__ ( self, config ):
         self.host = config.host
         self.access_key = config.access_key

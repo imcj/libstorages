@@ -1,7 +1,7 @@
 from boto.s3.connection import Location
 from pdb import set_trace as bp
 
-VENDER = [ 's3', 'oss', 'bcs' ]
+VENDER = [ 's3', 'oss', 'bcs', 'qiniu' ]
 
 class Config ( dict ):
     def __init__ ( self, access_key, secret_key, host = None ):

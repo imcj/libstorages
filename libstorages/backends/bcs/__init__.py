@@ -1,6 +1,6 @@
 #! -*- encoding:utf-8 -*-
 
-from libstorages import pybcs, Object, Bucket
+from libstorages import pybcs, Object, Bucket, Storage
 from libstorages.errors import BucketNameDuplication, BucketCanNotCreate, \
 ObjectNotExists
 from libstorages.pybcs.httpc import HTTPException
@@ -65,7 +65,7 @@ class BCSBucket ( Bucket ):
             if 403 == e.status:
                 raise BucketNameDuplication ( )
 
-class Adapter:
+class BCSStorage ( Storage ):
     def __init__ ( self, config ):
         self.config = config
         self.bcs = pybcs.BCS ( self.config.host, self.config.access_key, \

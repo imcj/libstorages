@@ -46,9 +46,10 @@ BucketCanNotCreate
 >>> store.get_object ( BUCKET_PUBLIC, "hello" ).read ( )
 Traceback (most recent call last):
     ...
-ObjectNotExists
+ObjectNotExists: hello
 >>> store.get_all_buckets ( )
 [<Bucket: libstorages-cj-private>, <Bucket: libstorages-cj-public>, \
 <Bucket: cloudstore-test-create>, <Bucket: bukaopu2>, <Bucket: bukaopu>]
 >>> store.get_all_objects ( BUCKET_PUBLIC )
+[<Object: hello3>, <Object: hello2>]
 """
