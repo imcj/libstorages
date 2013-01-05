@@ -1,6 +1,6 @@
 #! -*- encoding:utf-8 -*-
 
-from libstorages import pybcs, Object, Bucket, Storage
+from libstorages import pybcs, Key, Bucket, Storage
 from libstorages.errors import BucketNameDuplication, BucketCanNotCreate, \
 ObjectNotExists
 from libstorages.pybcs.httpc import HTTPException
@@ -13,7 +13,7 @@ class BucketAssembly:
     def __init__ ( self ):
         pass
 
-class BCSObject ( Object ):
+class BCSKey ( Key ):
     def __init__ ( self, bcs_object, *args, **kwargs ):
         self.bcs_object = bcs_object
         self.reading = False
@@ -57,6 +57,9 @@ class BCSBucket ( Bucket ):
         self.bcs = bcs
         super ( BCSBucket, self ).__init__ ( *args, **kwargs )
 
+    def get_key ( self, key ):
+        return BCSKey 
+
     def create ( self ):
         raise BucketCanNotCreate ( )
         try:
@@ -71,6 +74,8 @@ class BCSStorage ( Storage ):
         self.bcs = pybcs.BCS ( self.config.host, self.config.access_key, \
                                self.config.secret_key, pybcs.HttplibHTTPC  )
 
+    def _factory_create_bucket ( self, bucket ):
+        return BCSBucket ( self.bcs, bucket )
 
     def create_bucket ( self, bucket ):
         return BCSBucket ( self.bcs, bucket ).create ( )
@@ -108,17 +113,17 @@ class BCSStorage ( Storage ):
 
     def get_object ( self, bucket, key ):
         try:
-            return BCSObject ( self.bcs.bucket ( bucket ) \
+            return BCSKey ( self.bcs.bucket ( bucket ) \
                    .object ( "/" + key ) )
         except pybcs.httpc.HTTPException, e:
             if 404 == e.status:
                 raise ObjectNotExists ( )
 
-    def delete_object ( self, bucket, key ):
-        self._factory_create_object ( bucket, key ).delete  ( )
+    def delete_key ( self, bucket, key ):
+        self._factory_create_key ( bucket, key ).delete  ( )
 
-    def get_all_objects ( self, bucket, prefix = "", marker = "", \
-                          delimiter = "", max_keys = 1000 ):
+    def get_all_key ( self, bucket, prefix = "", marker = "", \
+                      delimiter = "", max_keys = 1000 ):
         return [ BCSObject ( bcs_object ) for bcs_object in \
             self.bcs.bucket ( bucket ).\
             list_objects ( prefix, marker, max_keys )

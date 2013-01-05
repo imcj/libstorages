@@ -53,6 +53,9 @@ ObjectNotExists: hello
 >>> storage.get_all_buckets ( )
 [<Bucket: libstorages-cj-private>, <Bucket: libstorages-cj-public>, \
 <Bucket: cloudstore-test-create>, <Bucket: bukaopu2>, <Bucket: bukaopu>]
->>> storage.get_all_objects ( BUCKET_PUBLIC )
-[<Object: hello3>, <Object: hello2>]
+>>> keys = storage.get_all_objects ( BUCKET_PUBLIC )
+>>> keys
+[<Object: hello2>, <Object: hello3>]
+>>> keys[0].read ( 5 )
+'hello'
 """

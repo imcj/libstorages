@@ -23,8 +23,6 @@ class Storage:
 
     def __init__ ( self, config ):
         self.config = config
-        if not config.adapter:
-            raise StandardError ( "Missing adapter." )
 
     def create_bucket ( self, bucket ):
         """创建一个 :class:`Bucket` 对象
@@ -36,7 +34,7 @@ class Storage:
         :rtype: :class:`Bucket`
         :return: :class:`Bucket`
         """
-        self.config.adapter.create_bucket ( bucket )
+        raise NotImplementedError ( )
 
     def delete_bucket ( self, bucket ):
         """
@@ -45,12 +43,12 @@ class Storage:
         :param bucket: Bucket对象
         :type bucket: string
         """
-        self.config.adapter.delete_bucket ( bucket )
+        raise NotImplementedError ( )
 
     def get_all_buckets ( self ):
-        return self.config.adapter.get_all_buckets ( )
+        raise NotImplementedError ( )
 
-    def create_object ( self, bucket, key, data, upload_callback = None ):
+    def create_key ( self, bucket, key, data, upload_callback = None ):
         """ 创建对象
 
         上传数据到远程服务器，部分厂商需要创建后设置acl。否则默认为私有。
@@ -72,16 +70,9 @@ class Storage:
         :param file_path: 本地文件路径，如果指定file_path那么data就会实效
         :type file_path: string
         """
+        raise NotImplementedError ( )
 
-        if isinstance ( data, basestring ):
-            self.config.adapter.create_object ( bucket, key, data, \
-            upload_callback )
-        elif hasattr ( data, "read" ):
-            self.config.adapter \
-            .create_object_from_stream ( bucket, key, data, \
-            upload_callback )
-
-    def create_object_from_file ( self, bucket, key, file_path ):
+    def create_key_from_file ( self, bucket, key, file_path ):
         """ 创建对象
 
         :meth:`libstorages.store.Store.create_object` 的别名。
@@ -94,14 +85,48 @@ class Storage:
         :type file_path: string
 
         """
-        self.config.adapter.create_object_from_file ( bucket, key, file_path )
+        raise NotImplementedError ( )
 
-    def get_object ( self, bucket, key ):
-        return self.config.adapter.get_object ( bucket, key )
+    def get_key ( self, bucket, key ):
+        raise NotImplementedError ( )
 
-    def delete_object ( self, bucket, key ):
-        self.config.adapter.delete_object ( bucket, key )
+    def delete_key ( self, bucket, key ):
+        raise NotImplementedError ( )
 
-    def get_all_objects ( self, bucket_name, prefix="", marker = "",\
+    def get_all_keys ( self, bucket_name, prefix="", marker = "",\
                           delimiter = "", max_keys = 1000 ):
-        return self.config.adapter.get_all_objects ( bucket_name, prefix, marker, delimiter, max_keys )
+        raise NotImplementedError ( )
+
+    def get_key_metadata ( self, bucket, key, name ):
+        """ 获得元信息
+
+        :param bucket: Bucket的名子
+        :type bucket: `string`
+        :param key: 对象名，因为小写 object 重名所以改叫key
+        :type key: string
+        :param name: 元信息的键名
+        :type name: string
+        :rtype: string
+        :return: string
+        """
+        self._factory_create_bucket ( bucket ).get_key ( key )\
+            .get_metadata ( name )
+        
+
+    def set_key_metadata ( self, bucket, key, name, value ):
+        """ 设置元信息
+
+        :param bucket: Bucket的名子
+        :type bucket: `string`
+        :param key: 对象名，因为小写 object 重名所以改叫key
+        :type key: string
+        :param name: 元信息的键名
+        :type name: string
+        :param value: 元信息的键值
+        :type value: string
+        """
+
+        self._factory_create_bucket ( bucket ).get_key ( key )\
+            .set_metadata ( name, value )
+
+

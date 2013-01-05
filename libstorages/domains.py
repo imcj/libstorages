@@ -2,7 +2,7 @@
 
 from pdb import set_trace as bp 
 
-class ObjectList ( list ):
+class KeyList ( list ):
     def __init__ ( self, collection = [], marker = "", max_keys = 1000 ):
         self += collection
         self.marker = marker
@@ -31,7 +31,7 @@ class CommonPrefix:
             shortname = self.name # TODO 
         return shortname
 
-class Object ( object ):
+class Key ( object ):
     BUFFER_SIZE = 8192
 
     def __init__ ( self, name = "", bucket = None, last_modified = None, \
@@ -87,6 +87,9 @@ class Bucket ( object ):
         raise NotImplementedError ( )
 
     def delete ( self ):
+        raise NotImplementedError ( )
+
+    def get_key ( self, key ):
         raise NotImplementedError ( )
 
     def __repr__ ( self ):
