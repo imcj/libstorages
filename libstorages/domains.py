@@ -2,7 +2,7 @@
 
 from pdb import set_trace as bp 
 
-class ObjectList ( list ):
+class KeyList ( list ):
     def __init__ ( self, collection = [], marker = "", max_keys = 1000 ):
         self += collection
         self.marker = marker
@@ -31,7 +31,9 @@ class CommonPrefix:
             shortname = self.name # TODO 
         return shortname
 
-class Object:
+class Key ( object ):
+    BUFFER_SIZE = 8192
+
     def __init__ ( self, name = "", bucket = None, last_modified = None, \
                    etag = "", md5 = "", content_type = "", size = "", \
                    write_progress_callback = None, read_progress_callback = \
@@ -52,7 +54,8 @@ class Object:
     def exists ( self ):
         raise NotImplementedError ( )
 
-    def read ( self ):
+    def read ( self, size = None ):
+        size = not size and self.BUFFER_SIZE or size
         raise NotImplementedError ( )
 
     def create ( self, data ):
@@ -75,7 +78,7 @@ class Object:
     def __repr__ ( self ):
         return "<Object: %s>" % self.name
 
-class Bucket:
+class Bucket ( object ):
     def __init__ ( self, name = "", creation_date = None ):
         self.name = name
         self.creation_date = creation_date
@@ -84,6 +87,9 @@ class Bucket:
         raise NotImplementedError ( )
 
     def delete ( self ):
+        raise NotImplementedError ( )
+
+    def get_key ( self, key ):
         raise NotImplementedError ( )
 
     def __repr__ ( self ):

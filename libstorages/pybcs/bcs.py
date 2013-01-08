@@ -45,7 +45,7 @@ class BCS:
         """
         rst = self.c.get(self.get_url)
         text = rst['body']
-        j = json.loads(text)
+        j = json.loads ( text.read ( ) )
         return [self.bucket(b['bucket_name'].encode('utf8')) for b in j]
 
     def bucket(self, bucket_name):

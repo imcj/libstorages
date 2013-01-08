@@ -1,10 +1,10 @@
 from libstorages.oss.oss_api import OssAPI
 from libstorages.backends.oss.assembly import OSSAssembly
-from libstorages import Bucket
+from libstorages import Bucket, Storage
 from pdb import set_trace as bp
 from StringIO import StringIO
 
-class Adapter:
+class OSSStorage ( Storage ):
     def __init__ ( self, config ):
         self.host = config.host
         self.access_key = config.access_key

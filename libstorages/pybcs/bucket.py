@@ -35,8 +35,8 @@ class Bucket:
     def __str__(self):
         return '%s/%s' % (self.host, self.bucket_name)
 
-    def object(self, object_name):
-        return Object(self, object_name)
+    def object(self, object_name, upload_callback = None ):
+        return Object(self, object_name, upload_callback )
 
     def superfile(self, object_name, sub_object_list):
         return Superfile(self, object_name, sub_object_list)
@@ -61,7 +61,7 @@ class Bucket:
         url = self.get_url + '&' + urllib.urlencode(params)
 
         rst = self.c.get(url)
-        j = json.loads( rst['body'] )
+        j = json.loads( rst['body'].read ( ) )
         return j['object_list']
 
     @network

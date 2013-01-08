@@ -1,6 +1,6 @@
 import boto
 import boto.s3.connection
-from libstorages import Bucket, Object, CommonPrefix
+from libstorages import Storage, Bucket, Object, CommonPrefix
 from dateutil.parser import parser
 from pdb import set_trace as bp
 
@@ -32,7 +32,7 @@ class S3Assembly:
 
         return objects
 
-class Adapter:
+class S3Storage ( Storage ):
     def __init__ ( self, config ):
         self.location = config.location
         self.access_key = config.access_key

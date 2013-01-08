@@ -295,17 +295,43 @@ class PyCurlHTTPC(HTTPC):
 
 
 class HttplibHTTPC(HTTPC):
-    def __init__(self):
-        pass
-        
+    def __init__ ( self, buffer_size = 8192 ):
+        self.BUFFER_SIZE = buffer_size
+
+    def _is_buffer ( self, data ):
+        if isinstance ( data, file ):
+            return True
+        elif hasattr ( data, "read" ):
+            return True
+
+        return False
     #used by small response (get/put), not get_file
-    def request(self, verb, url, data, headers={}):
-        response = self.send_request(verb, url, data, headers)
+    def request(self, verb, url, data, headers={}, upload_callback = None ):
+        if isinstance ( data, basestring ):
+            fp = StringIO ( data )
+        elif self._is_buffer ( data ):
+            fp = data
+        fp.seek ( os.SEEK_SET, os.SEEK_END )
+        size = fp.tell ( )
+        fp.seek ( 0 )
+
+        conn = self.send_request(verb, url, data, size, headers)
+
+        buff = fp.read ( self.BUFFER_SIZE )
+        loaded = len ( buff )
+        while len ( buff ):
+            conn.send ( buff )
+            if callable ( upload_callback ):
+                upload_callback ( loaded, size )
+
+            buff = fp.read ( self.BUFFER_SIZE ) 
+
+        response = conn.getresponse ( )
         if verb == 'HEAD':
             response.close()
             resp_body = ''
         else:
-            resp_body = response.read()
+            resp_body = response
         for (k, v) in response.getheaders():
             logger.debug('< %s: %s' % (k, v))
 #logger.debug('< ' + shorten(data, 1024))
@@ -320,7 +346,7 @@ class HttplibHTTPC(HTTPC):
             raise HTTPException(rst)
 
     #used by all 
-    def send_request(self, verb, url, data, headers={}):
+    def send_request(self, verb, url, data, data_size, headers={}):
         logger.info('ll httplibcurl -X "%s" "%s" ', verb, url)
         for (k, v) in headers.items():
             logger.debug('> %s: %s' % (k, v))
@@ -337,9 +363,19 @@ class HttplibHTTPC(HTTPC):
             conn = httplib.HTTPSConnection(host)
         else:
             conn = httplib.HTTPConnection(host)
-        conn.request(verb, path, data, headers)
-        response = conn.getresponse()
-        return response
+
+        conn.putrequest ( verb, path )
+        if 'content-length' not in headers:
+            headers['content-length'] = data_size
+
+        for key in headers.keys ( ):
+            conn.putheader ( str ( key ), str ( headers[key] ) )
+
+        conn.endheaders ( )
+        return conn
+        # conn.request(verb, path, data, headers)
+        # response = conn.getresponse()
+        # return response
 
     def get(self, url, headers={}):
         return self.request('GET', url, '', headers)
@@ -347,12 +383,9 @@ class HttplibHTTPC(HTTPC):
     def head(self, url, headers={}):
         return self.request('HEAD', url, '', headers)
 
-    def put(self, url, body='', headers={}):
+    def put(self, url, body='', headers={}, upload_callback = None ):
         headers = copy.deepcopy(headers)
-        if 'content-length' not in headers:
-            headers.update({'content-length': ( hasattr ( body, "read" ) and \
-                    hasattr ( body, "len" ) ) and body.len or str(len(body)) })
-        return self.request('PUT', url, body, headers)
+        return self.request('PUT', url, body, headers, upload_callback )
 
     def post(self, url, body='', headers={}):
         headers = copy.deepcopy(headers)
@@ -386,9 +419,9 @@ class HttplibHTTPC(HTTPC):
         else:
             raise HTTPException(rst)
 
-    def put_file(self, url, local_file, headers={}):
+    def put_file(self, url, local_file, headers={}, upload_callback = None ):
         logger.info('httplibcurl -X PUT -T "%s" %s ',  local_file, url)
-        return self.put(url, open(local_file, 'rb').read(), headers)
+        return self.put(url, open(local_file, 'rb'), headers, upload_callback )
 
     def post_multipart(self, url, local_file, filename='file1', fields={}, headers={}):
         logger.info('httplibcurl -X POST -F "%s" %s with fields: %s',  local_file, url, str(fields))

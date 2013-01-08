@@ -17,7 +17,7 @@ class NameException(Exception):
 
     
 class Object:
-    def __init__(self, bucket, object_name):
+    def __init__(self, bucket, object_name, upload_callback = None ):
         if object_name[0] != '/':
             raise NameException('object name must start with "/"')
         
@@ -40,6 +40,7 @@ class Object:
         self.public_get_url = '%s/%s%s' % ( self.bcs.host, bucket_name, 
                                                   '/' + urllib.quote(object_name[1:]) )
 
+        self.upload_callback = upload_callback
 
     def __str__(self):
         return '%s/%s%s' % (self.bcs.host, self.bucket.bucket_name, self.object_name)
@@ -61,7 +62,7 @@ class Object:
 
     @network
     def put(self, content, headers={}):
-        r = self.c.put(self.put_url, content, headers)
+        r = self.c.put(self.put_url, content, headers, self.upload_callback)
         return self.handle_response(r)
 
     
@@ -73,7 +74,8 @@ class Object:
             local_file:  本地文件名
         """
         self.assert_file_writeable(local_file)
-        r = self.c.put_file(self.put_url, local_file, headers)
+        r = self.c.put_file(self.put_url, local_file, headers, \
+        self.upload_callback )
         return self.handle_response(r)
 
     def put_file_part(self, local_file, start, length, headers={}):

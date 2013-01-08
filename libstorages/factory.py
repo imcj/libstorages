@@ -11,18 +11,7 @@ class SaxParserFactory:
 	def create ( self ):
 		return xml.sax.make_parser ( )
 
-
-class AdapterFactory:
-    def __init__ ( self ):
-        pass
-
-    def create ( self, vender_id, config ):
-        adapter_module_name = "libstorages.backends.%s" % vender_id.lower ( )
-        backends = __import__ ( adapter_module_name )
-        adapter_module = getattr ( libstorages.backends, vender_id.lower ( ) )
-        return getattr ( adapter_module , "Adapter" ) ( config ) 
-
-class StoreFactory:
+class StorageFactory:
     """
     格式 (VENDER_ID)_ACCESS_KEY (VENDER_ID)_SECRET_KEY 厂商id的大写。
     两个环境变量获得初始默认的配置
@@ -31,14 +20,14 @@ class StoreFactory:
     instance = None
 
     def __init__ ( self ):
-        self.adapter_factory = AdapterFactory ( )
+        pass
 
     @staticmethod
     def get_instance ( ):
-        if not StoreFactory.instance:
-            StoreFactory.instance = StoreFactory ( )
+        if not StorageFactory.instance:
+            StorageFactory.instance = StorageFactory ( )
 
-        return StoreFactory.instance;
+        return StorageFactory.instance;
 
     def create ( self, vender_id, access_key, secret_key ):
         if not vender_id in libstorages.config.VENDER:
@@ -55,8 +44,11 @@ class StoreFactory:
                              ( access_key = access_key, \
                                secret_key = secret_key )
 
-        config.adapter = self.adapter_factory.create ( vender_id, config )
-        return libstorages.Store ( config )
+        adapter_module_name = "libstorages.backends.%s" % vender_id.lower ( )
+        backends = __import__ ( adapter_module_name )
+        adapter_module = getattr ( libstorages.backends, vender_id.lower ( ) )
+        return getattr ( adapter_module , "%sStorage" % vender_id.upper ( ) ) \
+        ( config ) 
 
     def env ( self, vender_id ):
         ACCESS_KEY = os.getenv ( "%s_ACCESS_KEY" % vender_id.upper ( ) )
@@ -65,8 +57,8 @@ class StoreFactory:
         return self.create ( vender_id, ACCESS_KEY, SECRET_KEY )
 
 def create ( vender_id, access_key, secret_key ):
-    return StoreFactory.get_instance ( ) \
+    return StorageFactory.get_instance ( ) \
                        .create ( vender_id, access_key, secret_key )
 
 def env ( vender_id ):
-    return StoreFactory.get_instance ( ).env ( vender_id )
+    return StorageFactory.get_instance ( ).env ( vender_id )
