@@ -1,0 +1,2 @@
+[run]
+omit=libstorages/oss/*,libstorages/pybcs/*,libstorages/qbox/*
