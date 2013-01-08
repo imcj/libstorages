@@ -1,0 +1,7 @@
+boto
+nose
+nose-cov
+tox
+httplib2
+python-dateutil
+simplejson
