@@ -28,14 +28,18 @@ libstorages 提供简单统一的云存储API接口。
 * 阿里云存储
 * 又拍云存储
 
-初始化对象
------------
+使用
+----
 
->>> import libstorages
->>> store = libstorages.env ( "oss" )
->>> store.create_object ( "bukaopu", "hello", "hello, world !!!" )
->>> # OR 通过文件上传
->>> store.create_object_from_file ( "bukaopu", "hello", "/etc/resolve" )
+>>> storages = libstorages.env ( "oss" )
+>>> storages.create_object ( "bukaopu", "hello", "hello, world !!!" )
+
+.. note::
+
+    不要直接扔到Python里面执行，完整执行的代码还需要两步::
+
+    - ``import libstorages``
+    - ``env``方法需要设置环境变量``OSS_ACCESS_KEY``和``OSS_SECRET_KEY``
 
 
 用户指南
@@ -72,13 +76,29 @@ API
 
    api
 
-捐赠
+贡献
 ----
 
-如果你有兴趣贡献一些代码或视觉方面的内容。
+项目还在孵化阶段，需要贡献更多的后端。
+
+- 从GitHub `Fork <https://github.com/imcj/libstorages>`_ 项目然后建立 `新的分支 <http://www.ruanyifeng.com/blog/2012/07/git.html>`_ 。
+
+- 编码
+
+- Pull Request
+
+- 把你的名字填入 `作者 <https://github.com/imcj/libstorages/blob/master/AUTHORS.rst>`_ 。
+
 
 .. toctree::
    :maxdepth: 1
 
    dev/help
    dev/authors
+
+License
+--------
+
+`Apache 2.00 <https://raw.github.com/imcj/libstorages/master/LICENSE>`_ 
+
+Member of `OSS Manifesto <http://ossmanifesto.org>`_

@@ -25,8 +25,6 @@ libstorages 提供简单统一的云存储API接口。
 使用
 ----
 
-不要直接扔到Python里面执行。
-
 >>> storages = libstorages.env ( "oss" )
 >>> storages.create_object ( "bukaopu", "hello", "hello, world !!!" )
 
@@ -61,11 +59,18 @@ libstorages 提供简单统一的云存储API接口。
 
 - Pull Request
 
-- 把你的名字填入 `作者 <https://github.com/imcj/libstorages/blob/master/AUTHORS.rst>`_。
+- 把你的名字填入 `作者 <https://github.com/imcj/libstorages/blob/master/AUTHORS.rst>`_ 。
 
-TEAM
+团队
 -----
 
 目前唯一的开发人员。
 
 - `@imcj <https://github.com/imcj>`_ 
+
+License
+--------
+
+`Apache 2.00 <LICENSE>` 
+
+Member of `OSS Manifesto <http://ossmanifesto.org/>`
