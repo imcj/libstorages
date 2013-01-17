@@ -76,7 +76,7 @@ class Key ( object ):
         return shortname
 
     def __repr__ ( self ):
-        return "<Object: %s>" % self.name
+        return "<Key: %s>" % self.name
 
 class Bucket ( object ):
     def __init__ ( self, name = "", creation_date = None ):

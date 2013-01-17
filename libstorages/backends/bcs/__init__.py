@@ -1,6 +1,6 @@
 #! -*- encoding:utf-8 -*-
 
-from libstorages import pybcs, Key, Bucket, Storage
+from libstorages import pybcs, Key, Bucket, Storage, KeyList
 from libstorages.errors import BucketNameDuplication, BucketCanNotCreate, \
 ObjectNotExists
 from libstorages.pybcs.httpc import HTTPException
@@ -21,7 +21,7 @@ class BCSKey ( Key ):
 
         if not kwargs.has_key ( "name" ):
             kwargs['name'] = self.bcs_object.object_name
-        super ( BCSObject, self ).__init__ ( *args, **kwargs )
+        super ( BCSKey, self ).__init__ ( *args, **kwargs )
 
     def create ( self, data ):
         self.bcs_object.put ( data )
@@ -33,7 +33,12 @@ class BCSKey ( Key ):
         self.bcs_object.put ( open ( filepath, 'r' ) )
 
     def delete ( self ):
-        self.bcs_object.delete ( )
+        try:
+            self.bcs_object.delete ( )
+            return true
+        except HTTPException, e:
+            if 404 == e.status:
+                raise ObjectNotExists ( self.name[1:] )
 
     def exists ( self ):
         pass
@@ -50,7 +55,7 @@ class BCSKey ( Key ):
         return self.response['body'].read ( size )
 
     def __repr__ ( self ):
-        return "<Object: %s>" % self.name[1:]
+        return "<Key: %s>" % self.name[1:]
 
 class BCSBucket ( Bucket ):
     def __init__ ( self, bcs, *args, **kwargs ):
@@ -58,15 +63,10 @@ class BCSBucket ( Bucket ):
         super ( BCSBucket, self ).__init__ ( *args, **kwargs )
 
     def get_key ( self, key ):
-        return BCSKey 
+        return BCSKey ( )
 
     def create ( self ):
         raise BucketCanNotCreate ( )
-        try:
-            self.bcs.bucket ( self.name ).create ( )
-        except pybcs.httpc.HTTPException, e:
-            if 403 == e.status:
-                raise BucketNameDuplication ( )
 
 class BCSStorage ( Storage ):
     def __init__ ( self, config ):
@@ -77,7 +77,10 @@ class BCSStorage ( Storage ):
     def _factory_create_bucket ( self, bucket ):
         return BCSBucket ( self.bcs, bucket )
 
-    def create_bucket ( self, bucket ):
+     def _factory_create_key ( self, bucket, key, upload_callback = None ):
+        return BCSKey ( self.bcs.bucket ( bucket ).object ( "/" + key, upload_callback ) )
+
+   def create_bucket ( self, bucket ):
         return BCSBucket ( self.bcs, bucket ).create ( )
 
     def delete_bucket ( self, bucket ):
@@ -90,28 +93,25 @@ class BCSStorage ( Storage ):
             in buckets
         ]
 
-    def _factory_create_object ( self, bucket, key, upload_callback = None ):
-        return self.bcs.bucket ( bucket ).object ( "/" + key, upload_callback )
-
-    def create_object ( self, bucket, key, data, upload_callback = None ):
-        bcs_object = BCSObject ( \
-            self._factory_create_object ( bucket, key, upload_callback ) )
+    def create_key ( self, bucket, key, data, upload_callback = None ):
+        bcs_object = BCSKey ( \
+            self._factory_create_key ( bucket, key, upload_callback ) )
         bcs_object.create ( data )
 
         return bcs_object
 
-    def create_object_from_file ( self, bucket, key, file_path, \
+    def create_key_from_file ( self, bucket, key, file_path, \
                                   upload_callback = None ):
-        return self.create_object ( bucket, key, open ( file_path, 'r' ), \
+        return self.create_key ( bucket, key, open ( file_path, 'r' ), \
                                     upload_callback )
 
-    def create_object_from_stream ( self, bucket, key, stream, \
+    def create_key_from_stream ( self, bucket, key, stream, \
                                     upload_callback = None ):
         # TODO 修改bcs的代码，使其支持 file 对象。
         self.create_object ( bucket, key, stream, upload_callback )
 
 
-    def get_object ( self, bucket, key ):
+    def get_key ( self, bucket, key ):
         try:
             return BCSKey ( self.bcs.bucket ( bucket ) \
                    .object ( "/" + key ) )
@@ -124,7 +124,10 @@ class BCSStorage ( Storage ):
 
     def get_all_key ( self, bucket, prefix = "", marker = "", \
                       delimiter = "", max_keys = 1000 ):
-        return [ BCSObject ( bcs_object ) for bcs_object in \
+        keys = [ BCSKey ( bcs_object ) for bcs_object in \
             self.bcs.bucket ( bucket ).\
             list_objects ( prefix, marker, max_keys )
         ]
+        keys.sort ( )
+        keys = KeyList ( keys, marker )
+        return keys

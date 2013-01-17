@@ -1,6 +1,6 @@
 # !-*- encoding:utf-8 -*-
 
-from libstorages.domains import CommonPrefix, Object, Bucket, ObjectList
+from libstorages.domains import CommonPrefix, Key, Bucket, KeyList
 from config import OSSConfig, S3Config
 from libstorages.factory import env, create
 
