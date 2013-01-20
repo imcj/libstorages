@@ -36,18 +36,18 @@ class Key ( object ):
 
     def __init__ ( self, name = "", bucket = None, last_modified = None, \
                    etag = "", md5 = "", content_type = "", size = "", \
-                   write_progress_callback = None, read_progress_callback = \
-                   None ):
+                   upload_callback = None, download_callback = None ):
         self.name = name
         self.bucket = bucket
         self.last_modified = last_modified
         self.etag = etag
         self.md5  = md5
-        self.content_type = content_type
+        self.content_type = content_type == "" and "binary/octet-stream" \
+                                               or  content_type
         self.size = size
-        self.meta = {}
-        self.write_progress_callback = write_progress_callback
-        self.read_progress_callback  = read_progress_callback
+        self.metadata = {}
+        self.upload_callback   = upload_callback
+        self.download_callback = download_callback
 
     def delete ( self ):
         raise NotImplementedError ( )
