@@ -93,7 +93,7 @@ class Storage:
     def delete_key ( self, bucket, key ):
         raise NotImplementedError ( )
 
-    def get_all_keys ( self, bucket_name, prefix="", marker = "",\
+    def get_keys ( self, bucket_name, prefix="", marker = "",\
                           delimiter = "", max_keys = 1000 ):
         raise NotImplementedError ( )
 
@@ -102,7 +102,7 @@ class Storage:
 
         :param bucket: Bucket的名子
         :type bucket: `string`
-        :param key: 对象名，因为小写 object 重名所以改叫key
+        :param key: 对象名
         :type key: string
         :param name: 元信息的键名
         :type name: string
@@ -118,7 +118,7 @@ class Storage:
 
         :param bucket: Bucket的名子
         :type bucket: `string`
-        :param key: 对象名，因为小写 object 重名所以改叫key
+        :param key: 对象名
         :type key: string
         :param name: 元信息的键名
         :type name: string
