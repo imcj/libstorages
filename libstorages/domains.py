@@ -45,6 +45,7 @@ class Key ( object ):
         self.md5  = md5
         self.content_type = content_type
         self.size = size
+        self.meta = {}
         self.write_progress_callback = write_progress_callback
         self.read_progress_callback  = read_progress_callback
 
@@ -65,6 +66,12 @@ class Key ( object ):
         raise NotImplementedError ( )
 
     def create_from_file ( self, filepath ):
+        raise NotImplementedError ( )
+
+    def get_metadata ( self, name ):
+        raise NotImplementedError ( )
+
+    def set_metadata ( self, name, value ):
         raise NotImplementedError ( )
         
     @property
