@@ -4,6 +4,8 @@ __doc__="""
 >>> from libstorages import env, Storage, BUCKET_PUBLIC, TEST_BUCKET_CREATE
 >>> from StringIO import StringIO
 >>> from pdb import set_trace as bp 
+>>> import time
+>>> import datetime
 >>> import tempfile
 >>> import os
 >>> storage = env ( "bcs" )
@@ -17,7 +19,10 @@ True
 ...     loaded.append ( l )
 ...     total = t
 >>> storage.create_key ( BUCKET_PUBLIC, "hello", "hello, world!!!", \
-upload_callback = upload_callback )
+upload_callback = upload_callback, content_type = "application/json", \
+metadata = [ { "name" : "hello", "length": 0 } ], expires = time.strftime ( \
+"%a, %d %b %Y %H:%M:%S +0000", time.gmtime ( time.time ( ) + \
+datetime.timedelta ( days = 5 ).total_seconds ( ) ) ) )
 <Key: hello>
 >>> total
 15
@@ -33,6 +38,10 @@ StringIO ( "hello, world!!!" ) )
 temp.name )
 <Key: hello3>
 >>> hello = storage.get_key ( BUCKET_PUBLIC, "hello" )
+>>> hello.meta['crc32'] > 1
+True
+>>> hello.etag == hello.md5 and len ( hello.md5 ) == 32
+True
 >>> hello.read ( 10 )
 'hello, wor'
 >>> hello.read ( 10 )
