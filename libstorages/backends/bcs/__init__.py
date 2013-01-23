@@ -28,21 +28,16 @@ class BCSKey ( Key ):
             kwargs['name'] = self.bcs_object.object_name
         super ( BCSKey, self ).__init__ ( *args, **kwargs )
 
-    def create ( self, data, content_type = None, \
-                       metadata = None, expires = None, \
-                       upload_callback = None ):
-
-        content_type = not content_type and "binary/octet-stream"
+    def create ( self, data ):
         # TODO expires是否是格式正确的GMT时间
-        header = { "Content-Type": content_type }
-        if expires:
-            header['Expires'] = expires
+        header = { "Content-Type": self.content_type }
+        if self.expires:
+            header['Expires'] = self.expires
         
-        if metadata:
-            for metadata in metadata:
+        if self.metadata:
+            for key in self.metadata.keys ( ):
                 try:
-                    header['x-bcs-meta-%s' % metadata['key']] = \
-                    metadata['value']
+                    header['x-bcs-meta-%s' % key] = self.metadata[key]
                 except KeyError:
                     pass
 
@@ -57,7 +52,7 @@ class BCSKey ( Key ):
     def delete ( self ):
         try:
             self.bcs_object.delete ( )
-            return true
+            return True
         except HTTPException, e:
             if 404 == e.status:
                 raise ObjectNotExists ( self.name[1:] )
@@ -77,7 +72,8 @@ class BCSKey ( Key ):
             self.header['last-modified'] )
         self.etag = self.header['etag']
         self.md5  = self.header['content-md5']
-        self.expires = self._parse_datetime ( self.header['expires'] )
+        self.expires = self._parse_datetime ( self.header['expires']\
+            .replace ( "+0000", "GMT" ) )
 
         for key in self.header.keys ( ):
             try:
@@ -89,7 +85,7 @@ class BCSKey ( Key ):
                 else:
                     value = self.header[key]
 
-                self.meta[short_key] = value
+                self.metadata[short_key] = value
 
             except ValueError:
                 continue
@@ -159,6 +155,9 @@ class BCSStorage ( Storage ):
                      metadata = None, expires = None, \
                      upload_callback = None ):
         bcs_object = self._factory_create_key ( bucket, key, upload_callback ) 
+        bcs_object.content_type = content_type
+        bcs_object.expires = expires
+        bcs_object.metadata = metadata
         bcs_object.create ( data )
 
         return bcs_object
@@ -188,12 +187,11 @@ class BCSStorage ( Storage ):
     def delete_key ( self, bucket, key ):
         self._factory_create_key ( bucket, key ).delete  ( )
 
-    def get_all_key ( self, bucket, prefix = "", marker = "", \
+    def get_keys ( self, bucket, prefix = "", marker = "", \
                       delimiter = "", max_keys = 1000 ):
         keys = [ BCSKey ( bcs_object ) for bcs_object in \
             self.bcs.bucket ( bucket ).\
             list_objects ( prefix, marker, max_keys )
         ]
-        keys.sort ( )
         keys = KeyList ( keys, marker )
         return keys
