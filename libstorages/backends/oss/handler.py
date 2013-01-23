@@ -1,5 +1,5 @@
 import xml.sax
-from libstorages import Object, CommonPrefix, Bucket
+from libstorages import Key, CommonPrefix, Bucket
 from dateutil.parser import parser
 from pdb import set_trace as bp
 
@@ -7,8 +7,8 @@ class OSSHandlerFactory:
     def createBucketHandler ( self ):
         return OSSBucketXMLContentHandler ( )
 
-    def createObjectHandler ( self, bucket ):
-        return OSSObjectXMLContentHandler ( bucket )
+    def createKeyHandler ( self, bucket ):
+        return OSSKeyXMLContentHandler ( bucket )
 
 class OSSBucketXMLContentHandler ( xml.sax.ContentHandler ):
     def __init__ ( self ):
@@ -48,11 +48,11 @@ class OSSBucketXMLContentHandler ( xml.sax.ContentHandler ):
         if "CreationDate" == name:
             self.flag_creation_date = False
 
-class OSSObjectXMLContentHandler ( xml.sax.ContentHandler ):
+class OSSKeyXMLContentHandler ( xml.sax.ContentHandler ):
     def __init__ ( self, bucket ):
         self.bucket   = bucket
-        self.object   = None
-        self.objects  = []
+        self.key   = None
+        self.keys  = []
         self.prefix   = None
         self.prefixes = []
 
@@ -66,7 +66,7 @@ class OSSObjectXMLContentHandler ( xml.sax.ContentHandler ):
 
     def startElement ( self, name, attrs ):
         if "Contents" == name:
-            self.object = Object ( name = "", bucket = self.bucket )
+            self.key = Key ( name = "", bucket = self.bucket )
         elif "Key" == name:
             self.flag_key = True
         elif "LastModified" == name:
@@ -82,7 +82,7 @@ class OSSObjectXMLContentHandler ( xml.sax.ContentHandler ):
 
     def endElement ( self, name ):
         if "Contents" == name:
-            self.objects.append ( self.object )
+            self.keys.append ( self.key )
         elif "Key" == name:
             self.flag_key = False
         elif "LastModified" == name:
@@ -96,16 +96,16 @@ class OSSObjectXMLContentHandler ( xml.sax.ContentHandler ):
         elif "Prefix" == name:
             self.flag_prefix = False
         elif "ListBucketResult" == name:
-            self.objects = self.prefixes + self.objects
+            self.keys = self.prefixes + self.keys
 
     def characters ( self, content ):
         if self.flag_key:
-            self.object.name = content
+            self.key.name = content
         elif self.flag_last_modified:
-            self.object.last_modified = parser ( ).parse ( content )
+            self.key.last_modified = parser ( ).parse ( content )
         elif self.flag_etag:
-            self.object.etag = content
+            self.key.etag = content
         elif self.flag_size:
-            self.object.size = int ( content )
+            self.key.size = int ( content )
         elif self.flag_prefix:
             self.prefixes.append ( CommonPrefix ( content ) )
