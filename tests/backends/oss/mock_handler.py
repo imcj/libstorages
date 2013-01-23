@@ -1,4 +1,4 @@
-from libstorages import Bucket, Object, CommonPrefix
+from libstorages import Bucket, Key, CommonPrefix
 from pdb import set_trace as bp
 
 
@@ -8,7 +8,7 @@ class MockOSSHandlerFactory:
         return MockOSSBucketXMLContentHandler ( )
 
     def createObjectHandler ( self, bucket ):
-        return MockOSSObjectXMLContentHandler ( bucket )
+        return MockOSSKeyXMLContentHandler ( bucket )
 
         
 class MockSaxParser:
@@ -42,11 +42,11 @@ class MockOSSBucketXMLContentHandler ( MockCommonHandler ):
 		]
 
 
-class MockOSSObjectXMLContentHandler ( MockCommonHandler ):
+class MockOSSKeyXMLContentHandler ( MockCommonHandler ):
 	def __init__ ( self, bucket ):
 		self.bucket = bucket
 
 		self.objects = [
 			CommonPrefix ( name = "prefix1", bucket = bucket ),
-			Object ( name = "object1", bucket = bucket )
+		    Key ( name = "object1", bucket = bucket )
 		]

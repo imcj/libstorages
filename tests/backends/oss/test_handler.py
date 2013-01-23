@@ -1,7 +1,8 @@
 import os
 from libstorages.factory import SaxParserFactory
-from libstorages.backends.oss.handler import OSSObjectXMLContentHandler, OSSBucketXMLContentHandler
-from libstorages import Bucket, CommonPrefix, Object
+from libstorages.backends.oss.handler import OSSKeyXMLContentHandler, \
+OSSBucketXMLContentHandler
+from libstorages import Bucket, CommonPrefix, Key
 from pdb import set_trace as bp
 
 FIXTUES_DIR = os.path.join ( os.path.dirname ( os.path.abspath ( __file__ ) ), "../", "../", "fixtures" )
@@ -17,20 +18,20 @@ class TestOSSBucketXMLContentHandler ( OSSXMLContentHandler ):
 		pass
 
 
-class TestOSSObjectXMLContentHandler ( OSSXMLContentHandler ):
+class TestOSSKeyXMLContentHandler ( OSSXMLContentHandler ):
 
 	def test_parse ( self ):
-		handler = OSSObjectXMLContentHandler ( Bucket ( "bucket1" ) )
+		handler = OSSKeyXMLContentHandler ( Bucket ( "bucket1" ) )
 		self.parser.setContentHandler ( handler )
 		self.parser.parse ( open ( os.path.join ( self.fixtures, "oss_bucket_bukaopu_delimiter_by_dash.xml" ), "r" ) )
 
-		assert len ( handler.objects ) > 1
+		assert len ( handler.keys ) > 1
 		found_common_prefix = False
 		found_object = False
-		for key in handler.objects:
+		for key in handler.keys:
 			if isinstance ( key, CommonPrefix ):
 				found_common_prefix = True
-			if isinstance ( key, Object ):
+			if isinstance ( key, Key ):
 				found_object = True
 
 		assert found_common_prefix and found_object

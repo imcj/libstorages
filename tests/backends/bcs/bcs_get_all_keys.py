@@ -10,7 +10,7 @@ __doc__="""
 >>> storage.get_all_buckets ( )
 [<Bucket: libstorages-cj-private>, <Bucket: libstorages-cj-public>, \
 <Bucket: cloudstore-test-create>, <Bucket: bukaopu2>, <Bucket: bukaopu>]
->>> keys = storage.get_all_key ( BUCKET_PUBLIC )
+>>> keys = storage.get_keys ( BUCKET_PUBLIC )
 >>> keys
 [<Key: hello3>, <Key: hello2>]
 >>> keys[0].read ( 5 )

@@ -1,0 +1,3 @@
+from test_handler import TestOSSBucketXMLContentHandler, \
+TestOSSKeyXMLContentHandler
+from test_assembly import TestOSSAssembly

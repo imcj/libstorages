@@ -1,4 +1,5 @@
-from mock_handler import MockOSSBucketXMLContentHandler, MockOSSObjectXMLContentHandler, MockSaxParserFactory
+from mock_handler import MockOSSBucketXMLContentHandler, \
+MockOSSKeyXMLContentHandler, MockSaxParserFactory
 from mock_assembly import MockOSSHandlerFactory
 from libstorages.backends.oss.assembly import OSSAssembly
 from libstorages import Bucket
