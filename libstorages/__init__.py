@@ -55,11 +55,11 @@ class Storage:
         
         类: :class:`StoreFactory`
 
-        >>> store = libstorages.factory.StoreFactory.create ( "oss" )
-        >>> store.create_object ( "bucket1", "object1", "helloworld" )
+        >>> storage = libstorages.env ( "oss" )
+        >>> storage.create_object ( "bucket1", "object1", "helloworld" )
 
-        >>> store.create_object_from_file ( "bucket1", "object1",
-        ... "/media/hello.mp4" )
+        >>> storage.create_key ( "bucket1", "object1",
+        ... "object1" )
 
         :param bucket: Bucket的名子
         :type bucket: `string`
